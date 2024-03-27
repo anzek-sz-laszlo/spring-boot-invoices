@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <head>
+        <title>404 - resource not found!</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>EROFORRAS HIANY</h2>      
+    </head>
+<body>
+
+    <h2>404 - Resource not found</h2>
+    <h2></h2>
+    <p>
+    404 - A kert eroforras nem talalhato; Sablon specificus hiba!
+    </p>
+
+    <p th:text="*{error}">Hiba Info</p>
+    <p th:text="*{status}">Hiba Status</p>
+    
+    <a th:href="@{/applogin}">VISSZA A BEJELENTKEZESHEZ</a>
+</body>
+</html>

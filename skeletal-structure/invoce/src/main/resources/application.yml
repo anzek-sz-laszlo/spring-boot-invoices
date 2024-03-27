@@ -1,0 +1,11 @@
+## YAML Template.
+---
+# application.properties:
+# spring.profiles.active=normaluzem
+# spring.profiles.active=!normaluzem
+# --
+# konvencionálisan nem a "normaluzem" -et használjuk, hanem vagy a : "smart" vagy "prod" kulcsszavakat!:
+#spring:
+#    profiles:
+#        active: prod
+               

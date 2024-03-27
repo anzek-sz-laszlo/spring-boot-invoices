@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Bejelentkezés</h2>      
+    </head>
+    <body>
+        <h2>Bejelentkezés</h2>
+        <form th:action="@{/applogin}" method="post" th:object="${ujBelepo}">
+            
+            <label for="userName">Felhasználónév:</label><br>
+            <input type="text" th:field="*{userName}" /><br>
+            
+            <label for="pw">Jelszó:</label><br>
+            <input type="password" th:field="*{pw}" /><br><br>
+            
+            <input type="submit" value="Bejelentkezés">
+        </form>
+    </body>
+</html>

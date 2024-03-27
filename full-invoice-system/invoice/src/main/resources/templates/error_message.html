@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>401/403 Unauthorized/Forbidden</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Bejelentkezési hiba</h2>      
+    </head>
+    <body>
+
+        <h2>Varatlan hiba</h2>
+        <h2></h2>
+        <p>
+        A bejelentkezés sikertelen volt!
+        </p>
+
+        <p th:text="*{error}">Hiba Info</p>
+        <p th:text="*{status}">Hiba Status</p>
+
+        <a th:href="@{/applogin}">VISSZA A BEJELENTKEZESHEZ</a>
+    </body>
+</html>
