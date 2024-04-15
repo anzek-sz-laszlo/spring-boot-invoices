@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Bejelentkezés</h2>      
+    </head>
+    <body>
+        
+        <!--sekció 1-->
+        <h2>Felhasználók</h2>
+        <table border="1" class="table table-striped table-responsive-md">
+            <tbody>
+
+                <tr>                        
+                    <th>ID</th>   
+                    <th>UserName-felh.Neve</th>
+                    <th>Password-jelszó</th>
+                    <th>Authority-Jogosultság</th>
+                    <th>Törlés-delete</th>
+                </tr>
+
+                <tr border="1" align="left" th:each="egyUser : ${invUserek}">       
+                    <td th:text="${egyUser.id}">DolgozoId</td>
+                    <td><a th:href="@{/invusers/invuser_modify/{Id}( Id = ${egyUser.id} )}" th:text="${egyUser.userName}">userNev (modositas)</a></td> 
+                    <td th:text="${egyUser.pw}">Password</td>
+                    <td th:text="${egyUser.ls}">Jogosultság</td>
+                    <td><a th:href="@{/invusers/invuser_delete/{Id}( Id = ${egyUser.id} )}" th:text="${'TöröldKi'}">Törlés</a></td>
+                </tr>   
+            </tbody>
+        </table>
+        <br>
+        <!--sekció 2-->
+        <h2>Új felhasználó</h2>
+        <form th:action="@{/invusers/invuser_add}" method="post" th:object="${ujFelhasznalo}">
+            <input type="text" th:field="*{userName}" placeholder="Username">
+            <input type="password" th:field="*{pw}" placeholder="Password">
+            <select th:field="*{ls}">
+                <!--Ez alább egy tipikus "SpEL" (Spring Expression Language - a Spring Frameworkben) kifejezés -->
+                <option th:each="lsOption : ${ T(hu.anzek.backend.invoce.service.Jogosultsagok) .values() }" th:value="${lsOption}" th:text="${lsOption}"></option>
+            </select>
+            <br>
+            <button type="submit">Add hozzá!</button>
+        </form>
+        <br>
+        <a th:href="@{/appmenu}">VISSZA</a>
+    </body>
+</html>

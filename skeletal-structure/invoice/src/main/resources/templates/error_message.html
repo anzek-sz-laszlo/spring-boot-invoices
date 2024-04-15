@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ERROR-PAGE BACKEND(176)-InvoiceSystem</title>
+    </head>
+    <body>
+
+        <h1>Varatlan hiba!</h1>
+        <h2><p th:text="*{fejlec}"</p></h2>        
+        <br>
+        <p th:text="*{error}">Hiba Info</p>
+        <p th:text="*{status}">Hiba Status</p>
+
+        <a th:href="@{/applogin}">VISSZA A BEJELENTKEZESHEZ</a>
+    </body>
+</html>

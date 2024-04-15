@@ -1,0 +1,4 @@
+2024-04-15T09:28:31.152+02:00  WARN 19708 --- [invoce-system] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=22h26m1s405ms277µs900ns).
+2024-04-15T12:24:13.838+02:00  INFO 19708 --- [invoce-system] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-15T12:24:16.066+02:00  INFO 19708 --- [invoce-system] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-04-15T12:24:16.211+02:00  INFO 19708 --- [invoce-system] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 136 ms

@@ -1,0 +1,7 @@
+## YAML Template.
+---
+spring:
+    profiles:
+        active: normaluzem
+            
+               
