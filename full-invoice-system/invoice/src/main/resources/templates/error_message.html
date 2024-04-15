@@ -3,18 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>401/403 Unauthorized/Forbidden</title>
-        <h1>BACKEND(176)-InvoiceSystem</h1>
-        <h2>Bejelentkezési hiba</h2>      
+        <title>ERROR-PAGE BACKEND(176)-InvoiceSystem</title>
     </head>
     <body>
 
-        <h2>Varatlan hiba</h2>
-        <h2></h2>
-        <p>
-        A bejelentkezés sikertelen volt!
-        </p>
-
+        <h1>Varatlan hiba!</h1>
+        <h2><p th:text="*{fejlec}"</p></h2>        
+        <br>
         <p th:text="*{error}">Hiba Info</p>
         <p th:text="*{status}">Hiba Status</p>
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <link rel="stylesheet"
+                 href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+                 integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+                 crossorigin="anonymus">           
+    </head>
+    <body>
+        <h1>FŐMENÜ, VÁLASZTÉK</h1>
+        <div class="container my-2" align="left">     
+        
+            <div sec:authorize="isAuthenticated()">
+                <h1>Belépve -> <span sec:authentication="name"></span></h1>            
+
+                <h2>App-szinten bejelentkezett felhasználó:</h2>
+                <td th:text="${'Felhasználó kódja: ' + userInfo.Id}">userId</td>
+                <td th:text="${'Felhasználó név: ' + userInfo.userName}">userMail</td>
+                <br>
+                <br>
+                <br>
+                <div class="container my-2" align="left">
+                    <!--menü 1-->
+                    <table border="2">
+                        <tbody>   
+                            <td><a th:href="@{/invusers}">A) Felhasználók karbantartása</a></td>
+                            <!--<td><a /invusers>A) Felhasználók karbantartása</a></td>-->
+                        </tbody>
+                    </table>
+                    <br>
+                    <!--menü 2-->
+                    <table border="2">
+                        <tbody>   
+                            <td><a th:href="@{/alapadatok}">B) Alapadatok karbantartása</a></td>
+                        </tbody>
+                    </table>
+                </div>
+                 <br>
+            </div>
+        </div>
+    </body>
+</html>

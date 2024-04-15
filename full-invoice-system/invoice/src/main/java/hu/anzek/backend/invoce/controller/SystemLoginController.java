@@ -5,6 +5,7 @@
 package hu.anzek.backend.invoce.controller;
 
 
+import hu.anzek.backend.invoce.InvoceSystemApplication;
 import hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.model.InvUserDto;
@@ -48,10 +49,12 @@ public class SystemLoginController {
                                 String status,
                                 Map<String,InvUserDto> model1,
                                 Map<String,String> model2) {
+        
         if (error != null) {     
-            System.out.println("error = " + error + " statusz = " + status);
+            // System.out.println("error = " + error + " statusz = " + status);
             model2.put("error", error);
             model2.put("status", status);
+            model2.put("fejlec", "A bejelentkezés sikertelen volt! Kérem újra próbálni!");
             return "error_message";
         }else{            
             model1.put("ujBelepo", new InvUserDto());
@@ -67,18 +70,17 @@ public class SystemLoginController {
     @PostMapping("/applogin")
     public String login(@ModelAttribute("ujBelepo") 
                         InvUserDto ujBelepo) {       
-        
-        InvUser invUser = this.invUserMapper.invUser(ujBelepo);
+        // a DTO átmappelése a normál InvUser entitasba:
+        InvUser invUser = this.invUserMapper.dtoToInvUser(ujBelepo);
         invUser = this.isauth.isTrueUser(invUser.getUserName());
-        System.out.println(invUser.toString());
-        if( (invUser != null) && (this.isauth.isComparePassword(invUser, invUser.getPw()))){        
-            System.out.println("pw -> is helyes...");
-            // Sikeres bejelentkezés, átirányítjuk a felhasználót egy másik erőforrásra: a menüre:
+        if( (invUser != null) && (this.isauth.isComparePassword(invUser, ujBelepo.getPw()))){        
+            
+            // Sikeres bejelentkezés, kitöltjük a statikus felhasználót, amelyre immár mindenhonnan tudunk hivatkozni: 
+            InvoceSystemApplication.aktivUser = invUser;
+            // majd átirányítjuk a felhasználót a menü erőforrásra:
             return "redirect:/appmenu"; 
-        } else {
-            System.out.println("pw -> csak ez nem helyes...");
+        } else {            
             // Sikertelen bejelentkezés, visszatérhetünk ide, egy hibaüzenet paramétertel:  
-            // !
             if(invUser == null){
                 return "redirect:/applogin?error=Forbidden-Tiltott hozzaferes - nincs ilyen felhasznalo&status=403"; 
             }else{
@@ -91,7 +93,7 @@ public class SystemLoginController {
     /**
      * Bármilyen hiba esetén - amit a böngészőből indult - erre az URL-re érkezik egy GET kérés<br>
      * @param error a hibahelenség<br>
-     * @return Ha hiba volt, a l"404.html" sablont sablont jeléeníti meg.<br>
+     * @return Ha hiba volt, a "404.html" sablont sablont jeleníti meg.<br>
      */
     @GetMapping("/error")
     public String showErrorForm(@RequestParam(name = "error", required = false) 

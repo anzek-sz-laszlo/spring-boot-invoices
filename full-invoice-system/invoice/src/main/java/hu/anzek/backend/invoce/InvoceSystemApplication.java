@@ -1,6 +1,7 @@
 package hu.anzek.backend.invoce;
 
 import hu.anzek.backend.invoce.datalayer.init.InitDbase;
+import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class InvoceSystemApplication implements CommandLineRunner{
 
+    // deklarálunk egy felhasználót 
+    // amely majd egy InvUser belépésével ki lesz töltve a "SystemLoginController" -ben
+    // viszont így mindenhonnan hivatkozhatunk rá...
+    public static InvUser aktivUser = new InvUser();
     
     @Autowired
     private InitDbase initDbase;

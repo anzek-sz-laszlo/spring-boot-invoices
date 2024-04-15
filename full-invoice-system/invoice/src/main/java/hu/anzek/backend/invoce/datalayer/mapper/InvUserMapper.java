@@ -9,7 +9,6 @@ import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.model.InvUserDto;
 import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  *
@@ -17,10 +16,17 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring")
 public interface InvUserMapper {
-    InvUserDto invUserDto(InvUser invUser);
-    List<InvUserDto> invUserDtos(List<InvUser> invUsers);
     
-    @Mapping(target = "id", ignore = true)
-    InvUser invUser(InvUserDto invUserDto);
-    List<InvUser> invUsers(List<InvUserDto> invUserDtos);    
+    // 1
+    public InvUserDto invUserToDto(InvUser invUser);
+    
+    // 2
+    public List<InvUserDto> invUsersToDtos(List<InvUser> invUsers);
+    
+    // 3
+    // @Mapping(target = "id", ignore = true)
+    public InvUser dtoToInvUser(InvUserDto invUserDto);
+    
+    // 4
+    public List<InvUser> dtosToInvUsers(List<InvUserDto> invUserDtos);    
 }

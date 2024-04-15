@@ -5,9 +5,6 @@
 package hu.anzek.backend.invoce.config;
 
 
-import hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper;
-import hu.anzek.backend.invoce.datalayer.mapper.InvUserMapperImpl;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
@@ -18,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppBeansConfig {
     
-    @Bean
-    public InvUserMapper invUserMapperImpl(){
-        return new InvUserMapperImpl();
-    } 
+//    @Bean
+//    public InvUserMapper invUserMapperImpl(){
+//        return new InvUseMapperImpl();
+//    } 
 }

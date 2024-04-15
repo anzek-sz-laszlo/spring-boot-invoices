@@ -5,15 +5,16 @@
 package hu.anzek.backend.invoce.datalayer.model;
 
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 
 /**
  *
  * @author User
  */
-@Service
+@Component
 public class InvUserDto {
+    private long id;
     private String userName;    
     private String pw;
     private String ls;
@@ -21,9 +22,11 @@ public class InvUserDto {
     public InvUserDto() {
     }
 
-    public InvUserDto(String userName,
+    public InvUserDto(long id,
+                      String userName,
                       String pw,
                       String ls) {
+        this.id = id;
         this.userName = userName;
         this.pw = pw;
         this.ls = ls;
@@ -31,6 +34,14 @@ public class InvUserDto {
 
     public String getUserName() {
         return userName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setUserName(String userName) {

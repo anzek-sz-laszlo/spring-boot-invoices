@@ -23,11 +23,11 @@ public class InvUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     
     @Column(unique = true)
     private String userName;
-    
+ 
     private String pw;
     private String ls;
 
@@ -77,5 +77,4 @@ public class InvUser{
     public void setId(long id) {
         this.id = id;
     }
-
 }
