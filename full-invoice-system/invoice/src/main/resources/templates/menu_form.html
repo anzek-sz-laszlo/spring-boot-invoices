@@ -17,11 +17,11 @@
             <div sec:authorize="isAuthenticated()">
                 <h1>Belépve -> <span sec:authentication="name"></span></h1>            
 
-                <h2>App-szinten bejelentkezett felhasználó:</h2>
-                <td th:text="${'Felhasználó kódja: ' + userInfo.Id}">userId</td>
-                <td th:text="${'Felhasználó név: ' + userInfo.userName}">userMail</td>
-                <br>
-                <br>
+                <!--    <h2>App-szinten bejelentkezett felhasználó:</h2>
+                        <td th:text="${'Felhasználó kódja: ' + userInfo.Id}">userId</td>
+                        <td th:text="${'Felhasználó név: ' + userInfo.userName}">userMail</td>
+                        <br>
+                        <br> -->
                 <br>
                 <div class="container my-2" align="left">
                     <!--menü 1-->
@@ -35,9 +35,15 @@
                     <!--menü 2-->
                     <table border="2">
                         <tbody>   
-                            <td><a th:href="@{/alapadatok}">B) Alapadatok karbantartása</a></td>
+                            <td><a th:href="@{/cikkek}">B) Cikk törzsadatok karbantartása</a></td>
                         </tbody>
                     </table>
+                    <!--menü 3-->
+                    <table border="2">
+                        <tbody>   
+                            <td><a th:href="@{/partnerek}">C) Partner (vevők) törzsadatok karbantartása</a></td>
+                        </tbody>
+                    </table>                    
                 </div>
                  <br>
             </div>

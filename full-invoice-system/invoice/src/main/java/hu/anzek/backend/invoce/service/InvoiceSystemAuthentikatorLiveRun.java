@@ -5,6 +5,7 @@
 package hu.anzek.backend.invoce.service;
 
 
+import hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.repository.InvUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;

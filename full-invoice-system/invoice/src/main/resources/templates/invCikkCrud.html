@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Cikk-adatok kezelése</h2>      
+    </head>
+    <body>
+        <h2>Cikkek</h2>
+        <!-- Cikk lista megjelenítése -->
+        <table border="1" class="table table-striped table-responsive-md">           
+            <tbody>
+                <tr>
+                    <!-- Táblázat fejléc -->
+                    <th>ID</th>
+                    <th>Megnevezés</th>
+                    <th>MennyEgys</th>
+                    <th>afa_kulcs</th>
+                    <th>egyseg_ar</th>
+                    <th>keszleten_van</th>      
+                    <th>Törlés</th>
+                </tr>
+                <!-- Cikkek listázása -->
+                <!--                for( cikk : cikkek){
+                                        // a kiíratások
+                                    }-->
+                <!--  <a href="http://localhost/kepek/source/barmi.jpg" text="barmi fotó helye">ez egy kép url címe</a>-->
+                <tr border="1" align="left" th:each="cikk : ${cikkek}">
+                    <td th:text="${cikk.id}">Cikk ID</td>
+                    <td><a th:href="@{/cikkek/modify/{bela}(bela = ${cikk.id} )}" th:text="${cikk.megnevezes}">Cikk megnevezése (módosítás)</a></td>
+                    <td th:text="${cikk.mennyegys}">Cikk Mennyiségi Egysége</td>
+                    <td th:text="${cikk.afa_kulcs}">Cikk ÁFA kulcsa</td>      
+                    <td th:text="${cikk.egyseg_ar}">Cikk Egysegára</td> 
+                    <td th:text="${cikk.keszleten_van}">Cikk keszleten lévő mennyisége</td> 
+                    <td><a th:href="@{/cikkek/delete/{id}(id=${cikk.id})}" th:text="${'Törlés'}">Törlés</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <!-- Új cikk hozzáadása -->
+        <h2>Új cikk</h2>
+        <form th:action="@{/cikkek/add}" method="post" th:object="${ujCikk}">
+            <!-- Űrlap mezők -->
+            <input type="text" th:field="*{megnevezes}" placeholder="Megnevezés">
+            <input type="text" th:field="*{mennyegys}" placeholder="menny.Egys">
+            <input type="number" th:field="*{afa_kulcs}" placeholder="0.00" step="0.01">
+            <input type="number" th:field="*{egyseg_ar}" placeholder="0.00" step="0.01">
+            <input type="number" th:field="*{keszleten_van}" placeholder="0.00" step="0.01">
+            <br>
+            <button type="submit">Hozzáadás</button>
+        </form>
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza</a>
+    </body>
+
+</html>
