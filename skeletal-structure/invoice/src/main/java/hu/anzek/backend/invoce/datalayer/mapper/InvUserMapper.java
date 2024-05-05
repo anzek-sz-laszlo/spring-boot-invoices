@@ -6,7 +6,7 @@ package hu.anzek.backend.invoce.datalayer.mapper;
 
 
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
-import hu.anzek.backend.invoce.datalayer.model.InvUserDto;
+import hu.anzek.backend.invoce.datalayer.dto.InvUserDto;
 import java.util.List;
 import org.mapstruct.Mapper;
 

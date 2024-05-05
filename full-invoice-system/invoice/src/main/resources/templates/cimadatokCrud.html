@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Cikk-adatok kezelése</h2>      
+    </head>
+    <body>
+        <h2>Cimadatok</h2>
+        <br>
+        <!-- Új cimadatok hozzáadása -->
+        <h2>Új cimadat</h2>
+        <form action="#" th:action="@{/cimadat/ujbevitel}" th:object="${cimadat}" method="post">
+            <!-- Az ID mezőt rejtve tartjuk, mert ez egy meglévő rekord esetén kerül kitöltésre -->
+            <input type="hidden" th:field="*{id}" /> 
+
+            <label for="telepules">Település:</label>
+            <!-- Legördülő menü a települések kiválasztásához -->
+            <select th:field="*{telepules}">
+                <option th:each="telepules : ${telepulesek}" th:value="${telepules}" th:text="${telepules.irszam + '-' +telepules.helyseg}" />
+            </select> 
+
+            <label for="utca">Utca:</label>
+            <input type="text" th:field="*{utca}" />
+
+            <label for="kozterulet">Közterület:</label>
+            <input type="text" th:field="*{kozterulet}" />
+
+            <label for="hazszam">Házszám:</label>
+            <input type="text" th:field="*{hazszam}" />
+
+            <button type="submit">Címadat mentése</button>
+        </form> 
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza</a>          
+    </body>
+</html>

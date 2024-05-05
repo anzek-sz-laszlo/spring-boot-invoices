@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppBeansConfig {
     
-//    @Bean
-//    public InvUserMapper invUserMapperImpl(){
-//        return new InvUseMapperImpl();
-//    } 
+    //    @Bean
+    //    public InvUserMapper invUserMapperImpl(){
+    //        return new InvUseMapperImpl();
+    //    } 
 }

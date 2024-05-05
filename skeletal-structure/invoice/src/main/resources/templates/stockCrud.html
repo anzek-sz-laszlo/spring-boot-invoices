@@ -1,0 +1,38 @@
+<!-- addStock.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Cikk-raktár új forgalmi adat</h2>      
+    </head>
+    <body>
+        <form th:action="@{/stock/mozgas/ujbevitel}" method="post" th:object="${ujStock}">          
+            Cikk(id-megnevezés): 
+            <select th:field="*{cikk}">
+                <option th:each="invCikk : ${cikkLista}" 
+                        th:value="${invCikk.id}" 
+                    th:text="${invCikk.id + ' - ' + invCikk.megnevezes}">                                                    
+                </option>
+            </select>   
+            <br>
+            
+            Dátum(idő): 
+            <input type="datetime-local" th:field="*{mozgas_idopont}"/><br>
+            Bevételezve (készlet növekedés) : 
+            <input type="number" th:field="*{bevetelezett_mennyiseg}"/><br>
+            Kiadott mennyiség (k. csökkenés): 
+            <input type="number" th:field="*{kiadott_mennyiseg}"/><br>
+            <button type="submit">Rögzítés</button>
+        </form>
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza</a>        
+    </body>
+</html>

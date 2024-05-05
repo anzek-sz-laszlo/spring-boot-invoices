@@ -5,6 +5,7 @@
 package hu.anzek.backend.invoce.service;
 
 
+import hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 
 

@@ -32,7 +32,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <tr><td>Jelszó :</td><td><input th:field="*{pw}" /></td></tr>
                     <select th:field="*{ls}">
                         <!--Ez alább egy tipikus "SpEL" (Spring Expression Language - a Spring Frameworkben) kifejezés -->
-                        <option th:each="lsOption : ${ T(hu.anzek.backend.invoce.service.Jogosultsagok) .values() }" th:value="${lsOption}" th:text="${lsOption}"></option>
+                        <option th:each="lsOption : ${ T(hu.anzek.backend.invoce.service.enumeralt.Jogosultsagok) .values() }" th:value="${lsOption}" th:text="${lsOption}"></option>
                     </select> 
                 </tbody>
             </table>

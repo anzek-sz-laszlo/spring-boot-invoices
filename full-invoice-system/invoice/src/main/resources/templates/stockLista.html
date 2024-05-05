@@ -1,0 +1,47 @@
+<!-- listMozgasok.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Cikk-raktár forgalmi adatok listája</h2>      
+    </head>
+    <body>
+        <table border="1" class="table table-striped table-responsive-md"> 
+            <tr>
+                <th>Cikk adatok</th>
+                <th>Mozgás időpontja</th>
+                <th>Mozgás típusa</th>
+                <th>Bevételezett mennyiség</th>
+                <th>Kiadott mennyiség</th>
+                <th>Szöveg</th>
+                <th>Törlés</th>
+            </tr>
+            <tr border="1" align="left" th:each="mozgas : ${stockLista}">
+                <td th:if="${mozgas.cikk != null}">
+                    <a th:href="@{/cikkek/modify/{id}(id=${mozgas.cikk.id})}" th:text="${mozgas.cikk.megnevezes}">
+                </td>
+                <td th:if="${mozgas.cikk == null}" th:text="${'Hiányzó-cikk-adat'}"></td>
+                <td th:text="${mozgas.mozgas_idopont}"></td>
+                <td th:text="${mozgas.szoveg}"></td>
+                <td th:text="${mozgas.bevetelezett_mennyiseg}"></td>
+                <td th:text="${mozgas.kiadott_mennyiseg}"></td>
+                <td><a th:href="@{/stock/mozgas/modositas/{id}(id=${mozgas.id})}">Módosít</a></td>  <!-- th:number="${mozgas.szöveg}-->
+                <td><a th:href="@{/stock/mozgas/delete/{id}(id=${mozgas.id})}">Törlés</a></td>
+            </tr>
+        </table>
+        <br>
+        <!-- újbevitelhez lépő gomb -->
+        <a th:href="@{/stock/mozgas/bevitel}">Új mozgás Bevitelhez</a>        
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza a menübe</a>        
+    </body>
+</html>
+

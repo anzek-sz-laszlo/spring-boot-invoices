@@ -5,7 +5,7 @@
 package hu.anzek.backend.invoce.config;
 
 import hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun;
-import hu.anzek.backend.invoce.service.InvoiceSystemAutheticator;
+import hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

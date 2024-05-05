@@ -1,0 +1,41 @@
+<!-- stockModify.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Cikk-raktármozgás módosítása</h2>      
+    </head>
+    <body>
+        <form th:action="@{/stock/mozgas/modify}" method="post" th:object="${modifyDto}">
+            <!-- Űrlap mezők -->
+            <input type="text" th:value="*{id}" name="id" readonly="readonly"/><br>
+            MEGNEVEZÉSE -(ID): 
+            <input th:if="${modifyDto.cikk != null}" type="text" th:value="*{cikk.megnevezes + ' -(' + cikk.id } + ')'" readonly="readonly"/>
+            <input th:if="${modifyDto.cikk == null}" type="text" th:value="${'Hiányzó cikkadatok'}" readonly="readonly"/>
+            <br>
+            Dátum(idő): <input type="datetime-local" th:value="*{mozgas_idopont}" name="mozgas_idopont"/><br>
+            Mozgás típusa: 
+            <select th:field="*{szoveg}">      
+                <option th:each="lsOption : ${ T(hu.anzek.backend.invoce.service.enumeralt.Mozgasok).values() }" 
+                        th:value="${lsOption}" 
+                        th:text="${lsOption}">                            
+                </option>
+            </select> 
+            <br>                
+            Bevételezett: <input type="number" th:value="*{bevetelezett_mennyiseg}" name="bevetelezett_mennyiseg"/><br>
+            Kiadott: <input type="number" th:value="*{kiadott_mennyiseg}" name="kiadott_mennyiseg"/><br>
+            <button type="submit">Módosítás mentése</button>
+        </form>
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza</a>        
+    </body>
+</html>
+

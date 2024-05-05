@@ -8,7 +8,7 @@ package hu.anzek.backend.invoce.datalayer.init;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.repository.InvUserRepo;
 import hu.anzek.backend.invoce.service.InvUserService;
-import hu.anzek.backend.invoce.service.Jogosultsagok;
+import hu.anzek.backend.invoce.service.enumeralt.Jogosultsagok;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

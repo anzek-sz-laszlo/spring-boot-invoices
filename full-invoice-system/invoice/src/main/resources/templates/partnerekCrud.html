@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Partneradatok kezelése</h2>      
+    </head>
+    <body>
+        <h2>Partnerek</h2>
+        <!-- A partnerlista megjelenítése -->
+        <table border="1" class="table table-striped table-responsive-md">           
+            <tbody>
+                <tr>
+                    <!-- Táblázat fejléc -->
+                    <th>ID</th>
+                    <th>Megnevezés</th>
+                    <th>Adószám</th>
+                    <th>Fizetési_mód</th>
+                    <th>Közösségi adószám</th>
+                    <th>vevo_szallito</th>
+                    <th>Cím</th>
+                    <th>Törlés</th>
+                </tr>
+                <!-- Cikkek listázása -->
+                <tr border="1" align="left" th:each="egyPartner : ${partnerek}">                    
+                    <!-- Partnerek módosítása -->
+                    <td th:text="${egyPartner.partner_id}">ID</td>  
+                    <td><a th:href="@{/partner/modositas/{id}( id = ${egyPartner.partner_id} )}" th:text="${egyPartner.partner_megnevezes}">Megnevezés-módosítás</a></td>           
+                    <td th:text="${egyPartner.partner_adoszam}">Adószám</td>      
+                    <td th:text="${egyPartner.partner_fizmod}">Fizmód</td>  
+                    <td th:text="${egyPartner.partner_kozossegi_asz}">Közösségi adószám</td> 
+                    <td th:text="${egyPartner.partner_vevo_szallito}">Vevő/SzállítóStátusz</td> 
+                     <!--<td th:text="${egyPartner.partner_cim.telepules.irszam + ' ' + egyPartner.partner_cim.utca + ' ' + egyPartner.partner_cim.kozterulet}">PartnerCimadatokz</td>-->
+                    <td th:text="${egyPartner.helyseg_irszam 
+                                    + '-' + 
+                                    egyPartner.helyseg_helyseg 
+                                    + ' ' + 
+                                    egyPartner.cimadat_utca 
+                                    + ' ' + 
+                                    egyPartner.cimadat_kozterulet 
+                                    + ' ' + 
+                                    egyPartner.cimadat_hazszam}">Partner_címadatok</td>
+                    <!--Partnerek törlése--> 
+                    <td><a th:href="@{/partner/torles/{id}(id=${egyPartner.partner_id})}">Törlés</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <!-- Új cikk hozzáadása -->           
+        <h2>Új partner adatai</h2>
+        <form action="#" th:action="@{/partner/ujbevitel}" th:object="${ujPartner}" method="post">
+            <!-- Partner adatok -->
+            <!-- Az ID mezőt rejtve tartjuk, mert ez egy meglévő rekord esetén kerül kitöltésre -->
+            <input type="hidden" th:field="*{id}" /> 
+
+            <label for="megnevezes">Megnevezés:</label>
+            <input type="text" th:field="*{megnevezes}" placeholder="Megnevezés" />
+            <br>
+            <label for="adoszam">Adószám:</label>
+            <input type="text" th:field="*{adoszam}" placeholder="Adószám" />
+            <br>
+            <label for="kozossegi_asz">Közösségi adószám:</label>
+            <input type="text" th:field="*{kozossegi_asz}" placeholder="Közösségi adószám" />
+            <br>
+            <label for="vevo_szallito">Vevő/Szállító:</label>
+            <!-- Legördülő menü a Vevő/Szállító státusz kiválasztásához -->
+            <select th:field="*{vevo_szallito}">
+                <option th:each="statusOption : ${T(hu.anzek.backend.invoce.service.enumeralt.PartnerStatus).values()}" th:value="${statusOption}" th:text="${statusOption}" />
+            </select>             
+            <br>
+            <label for="fizmod">Fizetési mód:</label>
+            <!-- Legördülő menü a fizetési módok kiválasztásához -->
+            <select th:field="*{fizmod}">
+                <option th:each="modOption : ${T(hu.anzek.backend.invoce.service.enumeralt.FizetesiModok).values()}" th:value="${modOption}" th:text="${modOption}" />
+            </select> 
+            <br>
+            <label for="egyeb_info">Egyéb információ:</label>
+            <textarea th:field="*{egyeb_info}" placeholder="Egyéb információk"></textarea>    
+            <br>
+            <button type="submit">Új Partner felvétele</button>
+        </form> 
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza</a>    
+    </body>
+</html>

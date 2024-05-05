@@ -1,0 +1,29 @@
+<!-- stockModify.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">        
+        <title>LOGIN-BACKEND176-InvoiceSystem</title>
+        <h1>BACKEND(176)-InvoiceSystem</h1>
+        <h2>Cikk-raktármozugás módosítása</h2>      
+    </head>
+    <body>
+        <form th:action="@{/stock/mozgas/modify}" method="post" th:object="modiMozgas">
+            <!-- Űrlap mezők -->
+            CIKK ID - MEGNEVEZÉSE: <input type="text" th:value="${stockMozgas.cikk.id + ' - ' + stockMozgas.cikk.megnevezes}" readonly="readonly"/><br>
+            Dátum(idő): <input type="datetime-local" th:value="${stockMozgas.mozgasIdopont}"/><br>
+            Bevételezett: <input type="number" th:value="${stockMozgas.bevetelezettMennyiseg}"/><br>
+            Kiadott: <input type="number" th:value="${stockMozgas.kiadottMennyiseg}"/><br>
+            <button type="submit">Módosítás mentése</button>
+        </form>
+        <br>
+        <!-- Vissza gomb -->
+        <a th:href="@{/appmenu}">Vissza</a>        
+    </body>
+</html>
+

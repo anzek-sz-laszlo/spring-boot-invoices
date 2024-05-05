@@ -6,7 +6,7 @@ package hu.anzek.backend.invoce.controller;
 
 
 import hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper;
-import hu.anzek.backend.invoce.datalayer.model.InvUserDto;
+import hu.anzek.backend.invoce.datalayer.dto.InvUserDto;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -5,9 +5,8 @@
 package hu.anzek.backend.invoce.controller;
 
 
-import hu.anzek.backend.invoce.InvoceSystemApplication;
 import hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper;
-import hu.anzek.backend.invoce.datalayer.model.InvUserDto;
+import hu.anzek.backend.invoce.datalayer.dto.InvUserDto;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +25,7 @@ public class MenuController {
     
     @GetMapping("/appmenu")
     public String showMenu(Map<String,InvUserDto> model){
-        
-        model.put("userInfo", this.mapper.invUserToDto(InvoceSystemApplication.aktivUser));
+
         return "menu_form";
     }
 }
