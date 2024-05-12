@@ -24,7 +24,13 @@ public interface InvUserRepo extends JpaRepository<InvUser, Long> {
      * @return true/false<br>
      */
     public InvUser findByUserName(String userName);
-    //public List<InvUser> findByUserNameAndPwAndLs(String userName, String pw, String ls);
+    // Nativ MySqk parancs:
+    // SELECT * FROM inv_user WHERE (user_name = :userName) AND (pw = :pw) AND (ls=:ls);
+    // JPA automata implementációja:
+    //      InvUser findByUserNameAndPwAndLs(String userName, String pw,String ls){
+    //      String queryStr = "SELECT * FROM inv_user WHERE (user_name =" + userName + ") AND (pw =" + pw + ") AND (ls=" + ls + ");"
+    //      return entityManager.createNativQuery(queryStr);
+    // }    
     public List<InvUser> findByUserNameAndPwAndLs(@Param("ls") 
                                                   String s1, 
                                                   @Param("pw") 

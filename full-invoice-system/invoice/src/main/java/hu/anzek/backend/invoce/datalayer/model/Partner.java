@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 //@AllArgsConstructor
 @Repository
 @Entity
-public class Partnerek {
+public class Partner {
         
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,10 +40,10 @@ public class Partnerek {
     private FizetesiModok fizmod;
     private String egyeb_info;
 
-    public Partnerek() {
+    public Partner() {
     }
 
-    public Partnerek(Long id,
+    public Partner(Long id,
                      String megnevezes,
                      String adoszam,
                      String kozossegi_asz,
@@ -61,6 +61,44 @@ public class Partnerek {
         this.egyeb_info = egyeb_info;
     }
 
+    @Override
+    public String toString(){
+        if(this != null){
+        return  "Partner { \n" + 
+                " - Id: " + this.id + ", \n" + 
+                " - megnevezes: " + this.megnevezes + ", \n" +
+                " - adoszam: " + this.adoszam + ", \n" +
+                " - kozossegi_asz: " + this.kozossegi_asz + ", \n" +
+                " - vevo_szallito: " + this.vevo_szallito.name() + ", \n" +
+                " - fizmod: " + this.fizmod.name() + ", \n" +
+                " - cimadat { \n" +
+                "            - id: " + this.id + ", \n" +
+                (this.partner_cim != null 
+                ? 
+                        "            - helyseg { \n" +
+                    (this.partner_cim.getTelepules() != null
+                    ?
+                        "                       - irszam: " + this.partner_cim.getTelepules().getIrszam() + ", \n" +   
+                        "                       - helyseg: " + this.partner_cim.getTelepules().getHelyseg() + ", \n" +  
+                        "                      }, \n" 
+                    :
+                        "                       - null ~n" + 
+                        "                      }, "
+                    ) +
+                    "            - utca: " + this.partner_cim.getUtca() + ", \n" +
+                    "            - kozterulet: " + this.partner_cim.getKozterulet() + ", \n" +
+                    "            - hazszam: " + this.partner_cim.getHazszam() + ", \n" +
+                    "           } \n" 
+                :
+                    "            - null \n" + 
+                    "           } \n"
+                ) +
+                "}\n";
+        }else{
+            return "Partner{ null, - cimadat { - helyseg { null }, null } }";
+        }
+    }
+    
     public Long getId() {
         return id;
     }

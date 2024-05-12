@@ -5,7 +5,7 @@
 package hu.anzek.backend.invoce.datalayer.repository;
 
 
-import hu.anzek.backend.invoce.datalayer.model.Partnerek;
+import hu.anzek.backend.invoce.datalayer.model.Partner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * @author User
  */
 @Repository
-public interface PartnerRepository extends JpaRepository<Partnerek,Long> {    
+public interface PartnerRepository extends JpaRepository<Partner,Long> {    
    
 //    @Query(value =  "SELECT " +
 //                    "    p.id AS partner_id," +
@@ -29,7 +29,8 @@ public interface PartnerRepository extends JpaRepository<Partnerek,Long> {
 //                    "    h.helyseg AS helyseg_helyseg, " +
 //                    "    c.utca AS cimadat_utca," +
 //                    "    c.kozterulet AS cimadat_kozterulet," +
-//                    "    c.hazszam AS cimadat_hazszam " +
+//                    "    c.hazszam AS cimadat_hazszam, " +
+//                    "    p.egyeb_info AS partner_egyeb_info " +
 //                    "FROM" +
 //                    "    partnerek p" +
 //                    "        JOIN" +
@@ -50,9 +51,10 @@ public interface PartnerRepository extends JpaRepository<Partnerek,Long> {
 //            "    h.helyseg AS helyseg_helyseg, " +
 //            "    c.utca AS cimadat_utca," +
 //            "    c.kozterulet AS cimadat_kozterulet," +
-//            "    c.hazszam AS cimadat_hazszam " +
+//            "    c.hazszam AS cimadat_hazszam, " +
+//                    "    p.egyeb_info AS partner_egyeb_info " +
 //            + "FROM "
-//            + "     Partnerek p "
+//            + "     Partner p "
 //            + "         JOIN "
 //            + "     p.partner_cim c "
 //            + "         JOIN "

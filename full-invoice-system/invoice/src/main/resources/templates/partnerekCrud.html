@@ -32,9 +32,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th>Törlés</th>
                 </tr>
                 <!-- Cikkek listázása -->
-                <tr border="1" align="left" th:each="egyPartner : ${partnerek}">                    
-                    <!-- Partnerek módosítása -->
+                <tr border="1" align="left" th:each="egyPartner : ${partnerekDto}">                                        
                     <td th:text="${egyPartner.partner_id}">ID</td>  
+                    <!-- Partnerek módosítása -->
                     <td><a th:href="@{/partner/modositas/{id}( id = ${egyPartner.partner_id} )}" th:text="${egyPartner.partner_megnevezes}">Megnevezés-módosítás</a></td>           
                     <td th:text="${egyPartner.partner_adoszam}">Adószám</td>      
                     <td th:text="${egyPartner.partner_fizmod}">Fizmód</td>  
@@ -58,34 +58,78 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <br>
         <!-- Új cikk hozzáadása -->           
         <h2>Új partner adatai</h2>
-        <form action="#" th:action="@{/partner/ujbevitel}" th:object="${ujPartner}" method="post">
-            <!-- Partner adatok -->
-            <!-- Az ID mezőt rejtve tartjuk, mert ez egy meglévő rekord esetén kerül kitöltésre -->
-            <input type="hidden" th:field="*{id}" /> 
-
-            <label for="megnevezes">Megnevezés:</label>
-            <input type="text" th:field="*{megnevezes}" placeholder="Megnevezés" />
-            <br>
-            <label for="adoszam">Adószám:</label>
-            <input type="text" th:field="*{adoszam}" placeholder="Adószám" />
-            <br>
-            <label for="kozossegi_asz">Közösségi adószám:</label>
-            <input type="text" th:field="*{kozossegi_asz}" placeholder="Közösségi adószám" />
-            <br>
-            <label for="vevo_szallito">Vevő/Szállító:</label>
-            <!-- Legördülő menü a Vevő/Szállító státusz kiválasztásához -->
-            <select th:field="*{vevo_szallito}">
-                <option th:each="statusOption : ${T(hu.anzek.backend.invoce.service.enumeralt.PartnerStatus).values()}" th:value="${statusOption}" th:text="${statusOption}" />
-            </select>             
-            <br>
-            <label for="fizmod">Fizetési mód:</label>
-            <!-- Legördülő menü a fizetési módok kiválasztásához -->
-            <select th:field="*{fizmod}">
-                <option th:each="modOption : ${T(hu.anzek.backend.invoce.service.enumeralt.FizetesiModok).values()}" th:value="${modOption}" th:text="${modOption}" />
-            </select> 
-            <br>
-            <label for="egyeb_info">Egyéb információ:</label>
-            <textarea th:field="*{egyeb_info}" placeholder="Egyéb információk"></textarea>    
+        <form th:action="@{/partner/ujbevitel}" th:object="${ujPartnerDto}" method="post">
+            <table>
+            <!-- PartnerCimHelyseg (dto) adatok felvétele-->
+                <!-- Az ID mezőt rejtve tartjuk, mert ez egy meglévő rekord esetén kerül kitöltésre -->    
+                <tr>
+                    <td>Id: <span th:text="*{partner_id}"> </span></td>
+                    <td><input th:field="*{partner_id}" type="hidden" /></td>
+                </tr>                 
+                <tr>
+                    <td>megnevezes :</td>
+                    <td><input th:field="*{partner_megnevezes}" placeholder="partner elnevezése, neve" size="100"/></td>
+                </tr>
+                <!-- Ugyan ez a bevitel, csak ömlesztve, nem táblázatos formában:
+                     <label for="megnevezes">Megnevezés: </label>
+                     <input type="text" th:field="*{partner_megnevezes}" placeholder="Megnevezés" /> -->
+                <br>
+                <tr>
+                    <td>Adószám: :</td>
+                    <td><input th:field="*{partner_adoszam}" placeholder="12345678-9-01" size="11"/></td>
+                </tr>
+                <tr>
+                    <td>Közösségi adószám :</td>
+                    <td><input th:field="*{partner_kozossegi_asz}" placeholder="HU12345678" size="11"/></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>Vevő-szállító státusz:</td>
+                    <!-- Legördülő menü a Vevő/Szállító státusz kiválasztásához -->
+                    <td><select th:field="*{partner_vevo_szallito}" class="from-control" size="5" style="resize: vertical">                 
+                            <option th:each="pStatus : ${T(hu.anzek.backend.invoce.service.enumeralt.PartnerStatus).values()}" 
+                                    th:value="${pStatus.status}" 
+                                    th:text="${pStatus}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fizetési mód:</td>
+                    <!-- Legördülő menü a fizetési módok kiválasztásához -->
+                    <td><select th:field="*{partner_fizmod}" class="from-control" size="8" style="resize: vertical">          
+                            <option th:each="fizMod : ${T(hu.anzek.backend.invoce.service.enumeralt.FizetesiModok).values()}" 
+                                    th:value="${fizMod.fizmod}" 
+                                    th:text="${fizMod}">
+                            </option>
+                        </select> 
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td>Egyéb információk :</td>
+                    <td><textarea th:field="*{partner_egyeb_info}" placeholder="Egyéb információk, megjegyzések"></textarea> </td>
+                </tr>      
+                <br>
+                <tr>
+                    <td>Irányítószám és helység:</td>
+                    <td><select id="helyseg_irszam" name="helyseg_irszam" th:field="*{helyseg_irszam}" class="from-control" size="10" style="resize: vertical">
+                            <option value="">Válasszon irányítószámot...</option>
+                            <option th:each="egyIrszam : ${irszamHelysegList}" 
+                                    th:value="${egyIrszam.irszam}"
+                                    th:text="${ egyIrszam.helyseg + ' ' + egyIrszam.irszam }">                    
+                            </option>
+                        </select>
+                    </td>
+                </tr>   
+                <tr>
+                    <td>A címadat további része :</td>
+                    <td><input th:field="*{cimadat_utca}" placeholder="utca megnevezése" size="25"/> 
+                        <input th:field="*{cimadat_kozterulet}" placeholder="út,utca,tér,hrsz" size="10"/> 
+                        <input th:field="*{cimadat_hazszam}" placeholder="em./házsz,hrsz" size="5"/> 
+                    </td>
+                </tr>                  
+            </table>
             <br>
             <button type="submit">Új Partner felvétele</button>
         </form> 

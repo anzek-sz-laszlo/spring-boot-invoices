@@ -32,4 +32,5 @@ public class PartnerCimHelysegDto {
     private String cimadat_utca;
     private String cimadat_kozterulet;
     private String cimadat_hazszam;
+    private String partner_egyeb_info;
 }

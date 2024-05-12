@@ -21,6 +21,5 @@ import org.springframework.stereotype.Repository;
 public interface CimadatRepository extends JpaRepository<Cimadat,Long> {    
     
     @Query(value = "SELECT * FROM cimadat WHERE helyseg_irszam = :irszam", nativeQuery = true)
-    List<Cimadat> findByIrszam(@Param("irszam") 
-                               String irszam);    
+    List<Cimadat> findByIrszam(@Param("irszam") String irszam);    
 }

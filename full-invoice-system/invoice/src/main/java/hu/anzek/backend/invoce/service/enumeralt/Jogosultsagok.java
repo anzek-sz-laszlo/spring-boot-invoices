@@ -20,4 +20,15 @@ public enum Jogosultsagok {
     private Jogosultsagok(int author){        
         this.author=author;
     }
+
+    public Jogosultsagok getValue(int intValue){
+        switch(intValue){
+            case 0 : return this.GLOBAL_USER;
+            case 1 : return this.GLOBAL_SYSTEMADMIN;
+            case 2 : return this.OBSERVER_USER;
+            case 3 : return this.INVOICING_USER; 
+            case 4 : return this.MASTER_DATA_ACCESS_USER; 
+        }        
+        return this.GLOBAL_USER;
+    }    
 }

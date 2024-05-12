@@ -7,16 +7,15 @@ package hu.anzek.backend.invoce.config;
 
 import org.springframework.context.annotation.Configuration;
 
-
 /**
  *
  * @author User
  */
 @Configuration
 public class AppBeansConfig {
-    
-    //    @Bean
-    //    public InvUserMapper invUserMapperImpl(){
-    //        return new InvUseMapperImpl();
-    //    } 
+     
+//    @Bean
+//    public PartnerViewMapper partnerViewMapper() {
+//        return new PartnerViewMapperImpl();
+//    } 
 }

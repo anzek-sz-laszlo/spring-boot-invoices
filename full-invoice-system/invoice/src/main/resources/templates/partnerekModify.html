@@ -17,7 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
         <h2>Partnerek módosítása</h2>
-        <form action="#" th:action="@{/partner/modositas/{id}(id=${partner.id})}" th:object="${partner}" method="post">
+        <form th:action="@{/partner/modify}" th:object="${partnerDto}" method="post">
             <!-- Input mezők -->
             <button type="submit">Mentés</button>
         </form>

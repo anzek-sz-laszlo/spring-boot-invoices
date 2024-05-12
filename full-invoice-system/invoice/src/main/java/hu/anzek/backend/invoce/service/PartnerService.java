@@ -6,13 +6,16 @@ package hu.anzek.backend.invoce.service;
 
 
 import hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto;
-import hu.anzek.backend.invoce.datalayer.model.Partnerek;
+import hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper;
+import hu.anzek.backend.invoce.datalayer.model.Cimadat;
+import hu.anzek.backend.invoce.datalayer.model.Partner;
 import hu.anzek.backend.invoce.datalayer.repository.PartnerRepository;
 import hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,24 +26,50 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
-public class PartnerService implements TorzsadatokCrudAndPrintService<Partnerek> {
+public class PartnerService implements TorzsadatokCrudAndPrintService<Partner> {
     
     // JPA entitások "entityManager" -el való használathoz való injektor 
     // amely önállóan használható(az Autowired helyett)!
     @PersistenceContext    
     private EntityManager entityManager;    
-    private final PartnerRepository repository;
+    
+    private final PartnerRepository partnerRepo;
+    @Autowired
+    private final CimadatService cimService;
+    private final PartnerCimMapper cimMapper;
     
     @Autowired
-    public PartnerService(PartnerRepository partnerRepo) {
-        this.repository = partnerRepo;
+    public PartnerService(PartnerRepository partnerRepo,
+                          CimadatService cimService,
+                          PartnerCimMapper cimMapper) {
+        this.partnerRepo = partnerRepo;
+        this.cimService = cimService;
+        this.cimMapper = cimMapper;
     }
   
     public List<PartnerCimHelysegDto> getAllFulDtoList() {
-        String jpql = "SELECT NEW hu.anzek.backend.invoce.datalayer.dto.PartenerCimHelysegDto(p.id, p.megnevezes, p.adoszam, p.kozossegi_asz, p.vevo_szallito, c.id, h.irszam, h.helyseg, c.utca, c.kozterulet, c.hazszam) " +
-                      " FROM Partnerek p JOIN p.partner_cim c JOIN c.telepules h";       
+   
+        // ez JPQL szintaxissal -
+        String jpql = "SELECT new PartenerCimHelysegDto("
+                + "     p.id AS partner_id, "
+                + "     p.megnevezes AS partner_megnevezes, "
+                + "     p.adoszam AS partner_adoszam, "
+                + "     p.kozossegi_asz AS partner_kozossegi_asz, "
+                + "     p.vevo_szallito AS partner_vevo_szallito, "
+                + "     p.fizmod AS partner_fizmod, "
+                + "     c.id AS cimadat_id, "
+                + "     h.irszam AS helyseg_irszam, "
+                + "     h.helyseg AS helyseg_helyseg, "
+                + "     c.utca AS cimadat_utca, "
+                + "     c.kozterulet AS cimadat_kozterulet, "
+                + "     c.hazszam AS cimadat_hazszam, "
+                + "     p.egyeb_info AS partner_egyeb_info "
+                + ") "
+                + " FROM Partner p JOIN p.partner_cim c JOIN c.telepules h"; 
+        // és a JPQL lekérdezéssel:
         // Query query = entityManager.createQuery(jpql);
-        
+    
+        // Ez natív MySql szintaxissal és lekérdezéssel:
         jpql = "SELECT "
                 + "     p.id AS partner_id, "
                 + "     p.megnevezes AS partner_megnevezes, "
@@ -53,8 +82,9 @@ public class PartnerService implements TorzsadatokCrudAndPrintService<Partnerek>
                 + "     h.helyseg AS helyseg_helyseg, "
                 + "     c.utca AS cimadat_utca, "
                 + "     c.kozterulet AS cimadat_kozterulet, "
-                + "     c.hazszam AS cimadat_hazszam "
-                + " FROM partnerek p "
+                + "     c.hazszam AS cimadat_hazszam, "
+                + "     p.egyeb_info AS partner_egyeb_info "
+                + " FROM partner p "
                 + "     LEFT JOIN cimadat c "
                 + "         ON p.partner_cim_id = c.id "
                 + "     LEFT JOIN helysegnev_tar h "
@@ -80,27 +110,31 @@ public class PartnerService implements TorzsadatokCrudAndPrintService<Partnerek>
     }
      
     @Override
-    public List<Partnerek> getAll() {
-        return this.repository.findAll();
+    public List<Partner> getAll() {
+        return this.partnerRepo.findAll();
     }
 
     @Override
-    public Partnerek getById(Long id) {
-        return this.repository.findById(id).orElse(null);
+    public Partner getById(Long id) {
+        Optional<Partner> optPart = this.partnerRepo.findById(id);
+        if(optPart.isPresent()){
+            System.out.println("XX2: A KIOLVASOTT PARTNER ADATAI : \n" + optPart.get().toString() );
+        }
+        return this.partnerRepo.findById(id).orElse(null);
     }
 
     @Override
-    public Partnerek create(Partnerek entity) {
+    public Partner create(Partner entity) {
         if (entity.getId() == null) {     
-            return this.repository.save(entity);
+            return this.partnerRepo.save(entity);
         }
         return null;        
     }
 
     @Override
-    public Partnerek update(Partnerek entity) {
-        if ((entity.getId() != null) && (this.repository.existsById(entity.getId()))) {    
-            return this.repository.save(entity);
+    public Partner update(Partner entity) {
+        if ((entity.getId() != null) && (this.partnerRepo.existsById(entity.getId()))) {    
+            return this.partnerRepo.save(entity);
         }
         return null;
     }
@@ -108,9 +142,9 @@ public class PartnerService implements TorzsadatokCrudAndPrintService<Partnerek>
     @Override
     public boolean delete(Long id) {
         if (id != null){
-            if (this.repository.existsById(id)) { 
-                this.repository.deleteById(id);
-                if ( ! this.repository.existsById(id)) { 
+            if (this.partnerRepo.existsById(id)) { 
+                this.partnerRepo.deleteById(id);
+                if ( ! this.partnerRepo.existsById(id)) { 
                     return true;
                 }
             }
@@ -128,5 +162,26 @@ public class PartnerService implements TorzsadatokCrudAndPrintService<Partnerek>
     public List<String> printEntityDetails(Long id) {
         // Implementáció a konkrét entitás részleteinek nyomtatásához
         return null;
+    }
+
+    public Partner partnerGrafMentes(boolean ujBevitel, Partner partner) {
+        if(ujBevitel){
+            if(partner != null){                
+                // kimeppeljük a címadatot a partner entitásból:
+                Cimadat cim = this.cimMapper.setCimadatFromPartner(partner);
+                // adatbázisba mentjük és rögvest vissza is olvassuk, hogy az "id" -je meglegyen!    
+                cim = this.cimService.create(cim);
+                // beírjuk a "cimadat_id" -t a partner entitásba (valójában átírjuk a teljes címet:
+                partner = this.cimMapper.setPartnerCimFromCimadat(cim, partner);
+                // a fenti művelet ezzel az alábbival equivalens, de ha már megírtuk jó az úgy:
+                // partner.setPartner_cim(cim); 
+                return this.create(partner);                
+            }else{
+                return null;
+            }
+        }else{
+            // módosítás végrehajtása:
+            return null;
+        }
     }
 }

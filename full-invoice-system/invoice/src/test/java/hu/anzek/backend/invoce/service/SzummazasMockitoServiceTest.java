@@ -61,6 +61,7 @@ public class SzummazasMockitoServiceTest {
 
     @BeforeEach
     public void setUp() {
+        // this.cikkService = mock(InvCikkService.class);
     }
     
     @AfterEach

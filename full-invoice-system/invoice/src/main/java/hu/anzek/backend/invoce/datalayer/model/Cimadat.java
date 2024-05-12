@@ -50,6 +50,30 @@ public class Cimadat {
         this.hazszam = hazszam;
     }
 
+    @Override
+    public String toString(){
+        if(this != null){
+        return  "Cimadat { \n" +
+                "          - id: " + this.id + ", \n" +
+                "          - helyseg { \n" +
+                (this.telepules != null
+                ?
+                    "                       - irszam: " + this.telepules.getIrszam() + ", \n" +   
+                    "                       - helyseg: " + this.telepules.getHelyseg() + ", \n" +  
+                    "                    }, \n" 
+                :
+                    "                       - null ~n" + 
+                    "                    }, "
+                ) +
+                "          - utca: " + this.utca + ", \n" +
+                "          - kozterulet: " + this.kozterulet + ", \n" +      
+                "          - hazszam: " + this.hazszam+ ", \n" +      
+                "}\n";
+        }else{
+            return "Cimadat { - helyseg { null }, null }";
+        }
+    }
+    
     public Long getId() {
         return id;
     }
