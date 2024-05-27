@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
 
@@ -50,9 +51,22 @@ public class Cimadat {
         this.hazszam = hazszam;
     }
 
+    public boolean equalsOwn(Object o){
+        if(o == null) return false;
+        if(this == o) return true;
+        if(this.getClass() != o.getClass()){
+            return false;
+        }           
+        Cimadat cimadat = (Cimadat) o;
+        return Objects.equals(id, cimadat.id) &&
+               Objects.equals(telepules, cimadat.telepules) &&
+               Objects.equals(utca, cimadat.utca) &&
+               Objects.equals(kozterulet, cimadat.kozterulet) &&
+               Objects.equals(hazszam, cimadat.hazszam);        
+    }
+    
     @Override
-    public String toString(){
-        if(this != null){
+    public String toString(){        
         return  "Cimadat { \n" +
                 "          - id: " + this.id + ", \n" +
                 "          - helyseg { \n" +
@@ -69,9 +83,10 @@ public class Cimadat {
                 "          - kozterulet: " + this.kozterulet + ", \n" +      
                 "          - hazszam: " + this.hazszam+ ", \n" +      
                 "}\n";
-        }else{
-            return "Cimadat { - helyseg { null }, null }";
-        }
+    }
+    
+    public void toConsol(String param){
+        System.out.println((param != null ? param : "")+ this.toString());        
     }
     
     public Long getId() {

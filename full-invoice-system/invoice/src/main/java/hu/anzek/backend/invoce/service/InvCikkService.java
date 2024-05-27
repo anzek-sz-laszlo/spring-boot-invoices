@@ -11,6 +11,7 @@ import hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InvCikkService implements TorzsadatokCrudAndPrintService<InvCikk> {
@@ -33,6 +34,7 @@ public class InvCikkService implements TorzsadatokCrudAndPrintService<InvCikk> {
     }
 
     @Override
+    @Transactional
     public InvCikk create(InvCikk entity) {
         if (entity.getId() == null) {     
             return this.repository.save(entity);
@@ -41,6 +43,7 @@ public class InvCikkService implements TorzsadatokCrudAndPrintService<InvCikk> {
     }
 
     @Override
+    @Transactional
     public InvCikk update(InvCikk entity) {
         if ((entity.getId() != null) && (this.repository.existsById(entity.getId()))) {    
             return this.repository.save(entity);
@@ -49,6 +52,7 @@ public class InvCikkService implements TorzsadatokCrudAndPrintService<InvCikk> {
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
         if (id != null){
             if (this.repository.existsById(id)) { 
@@ -71,6 +75,11 @@ public class InvCikkService implements TorzsadatokCrudAndPrintService<InvCikk> {
     public List<String> printEntityDetails(Long id) {
         // Implementáció a konkrét entitás részleteinek nyomtatásához
         return null;
+    }
+
+    @Override
+    public InvCikk getById(String id) {
+        return this.getById(Long.getLong(id));
     }
 }
 

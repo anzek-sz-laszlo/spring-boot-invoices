@@ -5,6 +5,7 @@
 package hu.anzek.backend.invoce.service.interfaces;
 
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 
@@ -17,8 +18,12 @@ public interface TorzsadatokCrudAndPrintService<T> {
     // törzskezelés:
     List<T> getAll();
     T getById(Long id);
+    T getById(String id);
+    @Transactional
     T create(T entity);
+    @Transactional
     T update(T entity);
+    @Transactional
     boolean delete(Long id);
     
     // nyomtatások:

@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
 
@@ -61,9 +62,25 @@ public class Partner {
         this.egyeb_info = egyeb_info;
     }
 
+    public boolean equalsOwn(Object o){           
+        if(o == null) return false;
+        if(this == o) return true;
+        if(this.getClass() != o.getClass()){
+            return false;
+        }        
+        Partner partner = (Partner) o;
+        return Objects.equals(id, partner.id) &&
+               Objects.equals(megnevezes, partner.megnevezes) &&
+               Objects.equals(adoszam, partner.adoszam) &&
+               Objects.equals(kozossegi_asz, partner.kozossegi_asz) &&
+               Objects.equals(vevo_szallito, partner.vevo_szallito) &&
+               Objects.equals(fizmod, partner.fizmod) &&  
+               Objects.equals(partner_cim, partner.partner_cim) &&  
+               Objects.equals(egyeb_info, partner.egyeb_info);  
+    }
+    
     @Override
-    public String toString(){
-        if(this != null){
+    public String toString(){      
         return  "Partner { \n" + 
                 " - Id: " + this.id + ", \n" + 
                 " - megnevezes: " + this.megnevezes + ", \n" +
@@ -71,8 +88,9 @@ public class Partner {
                 " - kozossegi_asz: " + this.kozossegi_asz + ", \n" +
                 " - vevo_szallito: " + this.vevo_szallito.name() + ", \n" +
                 " - fizmod: " + this.fizmod.name() + ", \n" +
+                " - egyebInfo: " + this.egyeb_info + ", \n" +
                 " - cimadat { \n" +
-                "            - id: " + this.id + ", \n" +
+                "            - id: " + this.partner_cim.getId() + ", \n" +
                 (this.partner_cim != null 
                 ? 
                         "            - helyseg { \n" +
@@ -94,9 +112,10 @@ public class Partner {
                     "           } \n"
                 ) +
                 "}\n";
-        }else{
-            return "Partner{ null, - cimadat { - helyseg { null }, null } }";
-        }
+    }
+    
+    public void toConsol(String param){
+        System.out.println((param != null ? param : "")+ this.toString());
     }
     
     public Long getId() {

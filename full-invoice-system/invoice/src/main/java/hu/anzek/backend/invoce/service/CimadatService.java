@@ -5,11 +5,15 @@
 package hu.anzek.backend.invoce.service;
 
 
+import hu.anzek.backend.invoce.datalayer.dto.CimadatDto;
+import hu.anzek.backend.invoce.datalayer.mapper.CimadatMapper;
 import hu.anzek.backend.invoce.datalayer.model.Cimadat;
 import hu.anzek.backend.invoce.datalayer.repository.CimadatRepository;
 import hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -21,10 +25,15 @@ import org.springframework.stereotype.Service;
 public class CimadatService implements TorzsadatokCrudAndPrintService<Cimadat> {
 
     private final CimadatRepository cimRepo;
-
+    private final CimadatMapper cimMapper;
+    private final HelysegnevTarService helysegService;
     @Autowired
-    public CimadatService(CimadatRepository cimRepo) {
+    public CimadatService(CimadatRepository cimRepo,
+                          HelysegnevTarService helysegService,
+                          CimadatMapper cimMapper) {
         this.cimRepo = cimRepo;
+        this.cimMapper = cimMapper;
+        this.helysegService = helysegService;
     }
     
     @Override
@@ -38,22 +47,29 @@ public class CimadatService implements TorzsadatokCrudAndPrintService<Cimadat> {
     }
 
     @Override
-    public Cimadat create(Cimadat entity) {
-        if (entity.getId() == null) {     
-            return this.cimRepo.save(entity);
+    @Transactional
+    public Cimadat create(Cimadat cimadat) {
+        if (cimadat.getId() == null) {   
+            // a cimadat -> helysegnevTar tranzitív függőségét kell legelsőként rendezni
+            cimadat.setTelepules(this.helysegService.helysegnevTarSave(cimadat));
+            return this.cimRepo.save(cimadat);
         }
         return null;        
     }
 
     @Override
-    public Cimadat update(Cimadat entity) {
-        if ((entity.getId() != null) && (this.cimRepo.existsById(entity.getId()))) {    
-            return this.cimRepo.save(entity);
+    @Transactional
+    public Cimadat update(Cimadat cimadat) {
+        if ((cimadat.getId() != null) && (this.cimRepo.existsById(cimadat.getId()))) {    
+            // a cimadat -> helysegnevTar tranzitív függőségét kell legelsőként rendezni
+            cimadat.setTelepules(this.helysegService.helysegnevTarSave(cimadat));
+            return this.cimRepo.save(cimadat);
         }
         return null;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
         if (id != null){
             if (this.cimRepo.existsById(id)) { 
@@ -81,4 +97,23 @@ public class CimadatService implements TorzsadatokCrudAndPrintService<Cimadat> {
     public List<Cimadat> getCimekByIrszam(String irszam) {
         return this.cimRepo.findByIrszam(irszam);
     }
+
+    @Override
+    public Cimadat getById(String id) {
+        return this.getById(Long.getLong(id));
+    }
+        
+    public Cimadat entitasKiolvaso(ResponseEntity<CimadatDto> response){
+        if(response == null){
+            return null;
+        }
+        return this.cimMapper.dtoToCimadat(response.getBody());
+    }
+
+    public List<Cimadat> listaKiolvaso(ResponseEntity<List<CimadatDto>> response){
+        if(response == null){
+            return null;
+        }
+        return this.cimMapper.dtosToCimadats(response.getBody());
+    }            
 }

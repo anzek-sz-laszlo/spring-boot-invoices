@@ -5,10 +5,14 @@
 package hu.anzek.backend.invoce.datalayer.dto;
 
 
+import org.springframework.stereotype.Component;
+
+
 /**
  *
  * @author User
  */
+@Component
 public class HelysegnevTarDto {
     private String irszam;
     private String helyseg;

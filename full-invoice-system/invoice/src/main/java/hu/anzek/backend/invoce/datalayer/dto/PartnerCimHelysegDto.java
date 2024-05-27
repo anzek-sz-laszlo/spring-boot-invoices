@@ -5,6 +5,8 @@
 package hu.anzek.backend.invoce.datalayer.dto;
 
 
+import hu.anzek.backend.invoce.service.enumeralt.FizetesiModok;
+import hu.anzek.backend.invoce.service.enumeralt.PartnerStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,4 +35,31 @@ public class PartnerCimHelysegDto {
     private String cimadat_kozterulet;
     private String cimadat_hazszam;
     private String partner_egyeb_info;
+    
+@Override
+    public String toString(){      
+        return  "Partner { \n" + 
+                " - Id: " + this.partner_id + ", \n" + 
+                " - megnevezes: " + this.partner_megnevezes + ", \n" +
+                " - adoszam: " + this.partner_adoszam + ", \n" +
+                " - kozossegi_asz: " + this.partner_kozossegi_asz + ", \n" +
+                " - vevo_szallito: " + PartnerStatus.values()[this.partner_vevo_szallito] + ", \n" +
+                " - fizmod: " + FizetesiModok.values()[this.partner_fizmod] + ", \n" +
+                " - egyebInfo: " + this.partner_egyeb_info + ", \n" +
+                " - cimadat { \n" +
+                "            - id: " + this.cimadat_id + ", \n" +
+                "            - helyseg { \n" +
+                "                       - irszam: " + this.helyseg_irszam + ", \n" +   
+                "                       - helyseg: " + this.helyseg_helyseg + ", \n" +  
+                "                      }, \n" +
+                "            - utca: " + this.cimadat_utca + ", \n" +
+                "            - kozterulet: " + this.cimadat_kozterulet + ", \n" +
+                "            - hazszam: " + this.cimadat_hazszam + ", \n" +
+                "           } \n" +  
+                "}\n";
+    }    
+        
+    public void toConsol(String param){
+        System.out.println((param != null ? param : "")+ this.toString());        
+    }    
 }

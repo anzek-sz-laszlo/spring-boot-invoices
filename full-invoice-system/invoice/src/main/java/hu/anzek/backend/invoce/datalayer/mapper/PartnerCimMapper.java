@@ -20,6 +20,7 @@ public class PartnerCimMapper {
     
     public Cimadat setCimadatFromPartner(Partner partner){           
         Cimadat partnerCim = new Cimadat();
+        partnerCim.setId(partner.getPartner_cim().getId());
         partnerCim.setTelepules(partner.getPartner_cim().getTelepules());
         partnerCim.setUtca(partner.getPartner_cim().getUtca());
         partnerCim.setKozterulet(partner.getPartner_cim().getKozterulet());

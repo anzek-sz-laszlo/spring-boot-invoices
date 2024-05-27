@@ -13,7 +13,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 
 
@@ -21,10 +21,11 @@ import org.springframework.stereotype.Service;
  *
  * @author User
  */
-@Service
+@Component
 @Mapper(componentModel = "spring", uses = {FizmodMapperConverterImpl.class, PartnerStatusMapperConverterImpl.class})
-public interface PartnerViewMapper {
-    PartnerViewMapper INSTANCE = Mappers.getMapper(PartnerViewMapper.class);    
+public interface PartnerViewMapper {    
+    PartnerViewMapper INSTANCE = Mappers.getMapper(PartnerViewMapper.class); 
+    
     @Mapping(source = "id", target = "partner_id")
     @Mapping(source = "megnevezes", target = "partner_megnevezes")
     @Mapping(source = "adoszam", target = "partner_adoszam")

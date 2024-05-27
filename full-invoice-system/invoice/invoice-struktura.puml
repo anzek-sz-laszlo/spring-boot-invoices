@@ -1,0 +1,462 @@
+@startuml
+annotation hu.anzek.backend.invoce.controller.DeleteMapping
+annotation hu.anzek.backend.invoce.controller.GetMapping
+annotation hu.anzek.backend.invoce.controller.ModelAttribute
+annotation hu.anzek.backend.invoce.controller.PathVariable
+annotation hu.anzek.backend.invoce.controller.PostMapping
+annotation hu.anzek.backend.invoce.controller.PutMapping
+annotation hu.anzek.backend.invoce.controller.RequestBody
+annotation hu.anzek.backend.invoce.controller.RequestMapping
+annotation hu.anzek.backend.invoce.controller.RequestParam
+annotation hu.anzek.backend.invoce.controller.RestController
+annotation jakarta.persistence.Column
+annotation jakarta.persistence.Entity
+annotation jakarta.persistence.GeneratedValue
+annotation jakarta.persistence.Id
+annotation jakarta.persistence.JoinColumn
+annotation jakarta.persistence.ManyToOne
+annotation jakarta.persistence.PersistenceContext
+annotation jakarta.persistence.Table
+annotation jakarta.transaction.Transactional
+annotation java.lang.Override
+annotation java.lang.SuppressWarnings
+annotation lombok.AllArgsConstructor
+annotation lombok.Data
+annotation lombok.NoArgsConstructor
+annotation org.mapstruct.Mapper
+annotation org.mapstruct.Mapping
+annotation org.springframework.beans.factory.annotation.Autowired
+annotation org.springframework.boot.autoconfigure.SpringBootApplication
+annotation org.springframework.boot.autoconfigure.domain.EntityScan
+annotation org.springframework.cache.annotation.CacheEvict
+annotation org.springframework.context.annotation.Bean
+annotation org.springframework.context.annotation.Configuration
+annotation org.springframework.context.annotation.Profile
+annotation org.springframework.data.jpa.repository.Query
+annotation org.springframework.data.repository.query.Param
+annotation org.springframework.stereotype.Component
+annotation org.springframework.stereotype.Controller
+annotation org.springframework.stereotype.Repository
+annotation org.springframework.stereotype.Service
+annotation org.springframework.web.bind.annotation.GetMapping
+annotation org.springframework.web.bind.annotation.ModelAttribute
+annotation org.springframework.web.bind.annotation.PathVariable
+annotation org.springframework.web.bind.annotation.PostMapping
+annotation org.springframework.web.bind.annotation.RequestMapping
+annotation org.springframework.web.bind.annotation.RequestParam
+class hu.anzek.backend.invoce.InvoceSystemApplication
+class hu.anzek.backend.invoce.config.AppBeansConfig
+class hu.anzek.backend.invoce.config.AuthorizationConfigLiveRun
+class hu.anzek.backend.invoce.config.AuthorizationConfigTestRun
+class hu.anzek.backend.invoce.controller.CimController
+class hu.anzek.backend.invoce.controller.InvCikkController
+class hu.anzek.backend.invoce.controller.InvCikkRESTController
+class hu.anzek.backend.invoce.controller.InvUserController
+class hu.anzek.backend.invoce.controller.MenuController
+class hu.anzek.backend.invoce.controller.PartnerController
+class hu.anzek.backend.invoce.controller.PartnerRESTController
+class hu.anzek.backend.invoce.controller.StockController
+class hu.anzek.backend.invoce.controller.SystemLoginController
+class hu.anzek.backend.invoce.datalayer.dto.CimadatDto
+class hu.anzek.backend.invoce.datalayer.dto.HelysegnevTarDto
+class hu.anzek.backend.invoce.datalayer.dto.InvCikkDto
+class hu.anzek.backend.invoce.datalayer.dto.InvUserDto
+class hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto
+class hu.anzek.backend.invoce.datalayer.dto.PartnerDto
+class hu.anzek.backend.invoce.datalayer.dto.StockDto
+class hu.anzek.backend.invoce.datalayer.init.InitDbase
+class hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper
+class hu.anzek.backend.invoce.datalayer.model.Cimadat
+class hu.anzek.backend.invoce.datalayer.model.HelysegnevTar
+class hu.anzek.backend.invoce.datalayer.model.InvCikk
+class hu.anzek.backend.invoce.datalayer.model.InvUser
+class hu.anzek.backend.invoce.datalayer.model.Partner
+class hu.anzek.backend.invoce.datalayer.model.Stock
+class hu.anzek.backend.invoce.service.CimadatService
+class hu.anzek.backend.invoce.service.EkezetEltavolito
+class hu.anzek.backend.invoce.service.FizmodMapperConverterImpl
+class hu.anzek.backend.invoce.service.HelysegnevTarService
+class hu.anzek.backend.invoce.service.InvCikkService
+class hu.anzek.backend.invoce.service.InvUserService
+class hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun
+class hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorTestRun
+class hu.anzek.backend.invoce.service.MozgasokMapperConverterImpl
+class hu.anzek.backend.invoce.service.PartnerService
+class hu.anzek.backend.invoce.service.PartnerStatusMapperConverterImpl
+class hu.anzek.backend.invoce.service.StockService
+class hu.anzek.backend.invoce.service.UserNotFoundException
+class jakarta.persistence.EntityManager
+class jakarta.persistence.FetchType
+class jakarta.persistence.GenerationType
+class jakarta.persistence.Query
+class java.lang.Exception
+class java.time.LocalDateTime
+class java.time.format.DateTimeFormatter
+class java.util.ArrayList
+class java.util.List
+class java.util.Map
+class java.util.Objects
+class java.util.Optional
+class java.util.stream.Collectors
+class org.mapstruct.factory.Mappers
+class org.springframework.boot.SpringApplication
+class org.springframework.http.ResponseEntity
+class org.springframework.ui.Model
+enum hu.anzek.backend.invoce.service.enumeralt.FizetesiModok
+enum hu.anzek.backend.invoce.service.enumeralt.Jogosultsagok
+enum hu.anzek.backend.invoce.service.enumeralt.Mozgasok
+enum hu.anzek.backend.invoce.service.enumeralt.PartnerStatus
+interface hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper
+interface hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper
+interface hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper
+interface hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper
+interface hu.anzek.backend.invoce.datalayer.mapper.StockMapper
+interface hu.anzek.backend.invoce.datalayer.repository.CimadatRepository
+interface hu.anzek.backend.invoce.datalayer.repository.HelysegnevTarRepo
+interface hu.anzek.backend.invoce.datalayer.repository.InvCikkRepository
+interface hu.anzek.backend.invoce.datalayer.repository.InvUserRepo
+interface hu.anzek.backend.invoce.datalayer.repository.PartnerRepository
+interface hu.anzek.backend.invoce.datalayer.repository.StockRepository
+interface hu.anzek.backend.invoce.service.interfaces.EnumeraltConverter
+interface hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator
+interface hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService
+interface org.springframework.boot.CommandLineRunner
+interface org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.InvoceSystemApplication ..> java.lang.Override
+hu.anzek.backend.invoce.InvoceSystemApplication ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.InvoceSystemApplication ..> org.springframework.boot.autoconfigure.SpringBootApplication
+hu.anzek.backend.invoce.InvoceSystemApplication ..> hu.anzek.backend.invoce.datalayer.init.InitDbase
+hu.anzek.backend.invoce.InvoceSystemApplication ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.InvoceSystemApplication ..> org.springframework.boot.SpringApplication
+hu.anzek.backend.invoce.InvoceSystemApplication --|> org.springframework.boot.CommandLineRunner
+hu.anzek.backend.invoce.config.AppBeansConfig ..> org.springframework.context.annotation.Configuration
+hu.anzek.backend.invoce.config.AuthorizationConfigLiveRun ..> org.springframework.context.annotation.Bean
+hu.anzek.backend.invoce.config.AuthorizationConfigLiveRun ..> org.springframework.context.annotation.Configuration
+hu.anzek.backend.invoce.config.AuthorizationConfigLiveRun ..> org.springframework.context.annotation.Profile
+hu.anzek.backend.invoce.config.AuthorizationConfigLiveRun ..> hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun
+hu.anzek.backend.invoce.config.AuthorizationConfigLiveRun ..> hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator
+hu.anzek.backend.invoce.config.AuthorizationConfigTestRun ..> org.springframework.context.annotation.Bean
+hu.anzek.backend.invoce.config.AuthorizationConfigTestRun ..> org.springframework.context.annotation.Configuration
+hu.anzek.backend.invoce.config.AuthorizationConfigTestRun ..> org.springframework.context.annotation.Profile
+hu.anzek.backend.invoce.config.AuthorizationConfigTestRun ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.config.AuthorizationConfigTestRun ..> hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorTestRun
+hu.anzek.backend.invoce.config.AuthorizationConfigTestRun ..> hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.web.bind.annotation.GetMapping
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.web.bind.annotation.ModelAttribute
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.web.bind.annotation.PathVariable
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.web.bind.annotation.PostMapping
+hu.anzek.backend.invoce.controller.CimController ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.controller.CimController ..> hu.anzek.backend.invoce.service.CimadatService
+hu.anzek.backend.invoce.controller.CimController ..> org.springframework.ui.Model
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.web.bind.annotation.GetMapping
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.web.bind.annotation.ModelAttribute
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.web.bind.annotation.PathVariable
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.web.bind.annotation.PostMapping
+hu.anzek.backend.invoce.controller.InvCikkController ..> org.springframework.web.bind.annotation.RequestMapping
+hu.anzek.backend.invoce.controller.InvCikkController ..> hu.anzek.backend.invoce.datalayer.dto.InvCikkDto
+hu.anzek.backend.invoce.controller.InvCikkController ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.controller.InvCikkController ..> hu.anzek.backend.invoce.service.InvCikkService
+hu.anzek.backend.invoce.controller.InvCikkController ..> java.util.List
+hu.anzek.backend.invoce.controller.InvCikkController ..> java.util.Map
+hu.anzek.backend.invoce.controller.InvCikkController ..> hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.DeleteMapping
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.GetMapping
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.PathVariable
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.PostMapping
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.PutMapping
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.RequestBody
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.RequestMapping
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.controller.RestController
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.datalayer.dto.InvCikkDto
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.service.InvCikkService
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> java.util.List
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> java.util.stream.Collectors
+hu.anzek.backend.invoce.controller.InvCikkRESTController ..> hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.web.bind.annotation.GetMapping
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.web.bind.annotation.ModelAttribute
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.web.bind.annotation.PathVariable
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.web.bind.annotation.PostMapping
+hu.anzek.backend.invoce.controller.InvUserController ..> org.springframework.web.bind.annotation.RequestMapping
+hu.anzek.backend.invoce.controller.InvUserController ..> hu.anzek.backend.invoce.datalayer.dto.InvUserDto
+hu.anzek.backend.invoce.controller.InvUserController ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.controller.InvUserController ..> hu.anzek.backend.invoce.service.InvUserService
+hu.anzek.backend.invoce.controller.InvUserController ..> java.util.List
+hu.anzek.backend.invoce.controller.InvUserController ..> java.util.Map
+hu.anzek.backend.invoce.controller.InvUserController ..> hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper
+hu.anzek.backend.invoce.controller.MenuController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.MenuController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.MenuController ..> org.springframework.web.bind.annotation.GetMapping
+hu.anzek.backend.invoce.controller.MenuController ..> hu.anzek.backend.invoce.datalayer.dto.InvUserDto
+hu.anzek.backend.invoce.controller.MenuController ..> java.util.Map
+hu.anzek.backend.invoce.controller.MenuController ..> hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.web.bind.annotation.GetMapping
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.web.bind.annotation.ModelAttribute
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.web.bind.annotation.PathVariable
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.web.bind.annotation.PostMapping
+hu.anzek.backend.invoce.controller.PartnerController ..> hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto
+hu.anzek.backend.invoce.controller.PartnerController ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.controller.PartnerController ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.controller.PartnerController ..> hu.anzek.backend.invoce.service.CimadatService
+hu.anzek.backend.invoce.controller.PartnerController ..> hu.anzek.backend.invoce.service.HelysegnevTarService
+hu.anzek.backend.invoce.controller.PartnerController ..> hu.anzek.backend.invoce.service.PartnerService
+hu.anzek.backend.invoce.controller.PartnerController ..> java.util.List
+hu.anzek.backend.invoce.controller.PartnerController ..> org.springframework.ui.Model
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.DeleteMapping
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.GetMapping
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.PathVariable
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.PostMapping
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.PutMapping
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.RequestBody
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.RequestMapping
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.controller.RestController
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> hu.anzek.backend.invoce.service.PartnerService
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> java.util.List
+hu.anzek.backend.invoce.controller.PartnerRESTController ..> org.springframework.http.ResponseEntity
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.controller.GetMapping
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.controller.ModelAttribute
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.controller.PathVariable
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.controller.PostMapping
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.controller.RequestMapping
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.controller.RequestParam
+hu.anzek.backend.invoce.controller.StockController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.StockController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.datalayer.dto.StockDto
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.datalayer.model.Stock
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.service.InvCikkService
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.service.StockService
+hu.anzek.backend.invoce.controller.StockController ..> java.util.ArrayList
+hu.anzek.backend.invoce.controller.StockController ..> java.util.List
+hu.anzek.backend.invoce.controller.StockController ..> org.springframework.ui.Model
+hu.anzek.backend.invoce.controller.StockController ..> hu.anzek.backend.invoce.datalayer.mapper.StockMapper
+hu.anzek.backend.invoce.controller.SystemLoginController ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.controller.SystemLoginController ..> org.springframework.stereotype.Controller
+hu.anzek.backend.invoce.controller.SystemLoginController ..> org.springframework.web.bind.annotation.GetMapping
+hu.anzek.backend.invoce.controller.SystemLoginController ..> org.springframework.web.bind.annotation.ModelAttribute
+hu.anzek.backend.invoce.controller.SystemLoginController ..> org.springframework.web.bind.annotation.PostMapping
+hu.anzek.backend.invoce.controller.SystemLoginController ..> org.springframework.web.bind.annotation.RequestParam
+hu.anzek.backend.invoce.controller.SystemLoginController ..> hu.anzek.backend.invoce.InvoceSystemApplication
+hu.anzek.backend.invoce.controller.SystemLoginController ..> hu.anzek.backend.invoce.datalayer.dto.InvUserDto
+hu.anzek.backend.invoce.controller.SystemLoginController ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.controller.SystemLoginController ..> java.util.Map
+hu.anzek.backend.invoce.controller.SystemLoginController ..> hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper
+hu.anzek.backend.invoce.controller.SystemLoginController ..> hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator
+hu.anzek.backend.invoce.datalayer.dto.CimadatDto ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.datalayer.dto.CimadatDto ..> hu.anzek.backend.invoce.datalayer.model.HelysegnevTar
+hu.anzek.backend.invoce.datalayer.dto.HelysegnevTarDto ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.datalayer.dto.InvUserDto ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto ..> lombok.AllArgsConstructor
+hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto ..> lombok.Data
+hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto ..> lombok.NoArgsConstructor
+hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> lombok.AllArgsConstructor
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> lombok.Data
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> lombok.NoArgsConstructor
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> hu.anzek.backend.invoce.service.enumeralt.FizetesiModok
+hu.anzek.backend.invoce.datalayer.dto.PartnerDto ..> hu.anzek.backend.invoce.service.enumeralt.PartnerStatus
+hu.anzek.backend.invoce.datalayer.dto.StockDto ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.datalayer.dto.StockDto ..> java.time.LocalDateTime
+hu.anzek.backend.invoce.datalayer.dto.StockDto ..> hu.anzek.backend.invoce.service.enumeralt.Mozgasok
+hu.anzek.backend.invoce.datalayer.init.InitDbase ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.datalayer.init.InitDbase ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.datalayer.init.InitDbase ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.datalayer.init.InitDbase ..> hu.anzek.backend.invoce.service.InvUserService
+hu.anzek.backend.invoce.datalayer.init.InitDbase ..> hu.anzek.backend.invoce.service.enumeralt.Jogosultsagok
+hu.anzek.backend.invoce.datalayer.init.InitDbase ..> hu.anzek.backend.invoce.datalayer.repository.InvUserRepo
+hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper ..> hu.anzek.backend.invoce.datalayer.model.HelysegnevTar
+hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> jakarta.persistence.Entity
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> jakarta.persistence.GeneratedValue
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> jakarta.persistence.Id
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> jakarta.persistence.JoinColumn
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> jakarta.persistence.ManyToOne
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> java.lang.Override
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> jakarta.persistence.GenerationType
+hu.anzek.backend.invoce.datalayer.model.Cimadat ..> java.util.Objects
+hu.anzek.backend.invoce.datalayer.model.HelysegnevTar ..> jakarta.persistence.Entity
+hu.anzek.backend.invoce.datalayer.model.HelysegnevTar ..> jakarta.persistence.Id
+hu.anzek.backend.invoce.datalayer.model.HelysegnevTar ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.model.InvCikk ..> jakarta.persistence.Entity
+hu.anzek.backend.invoce.datalayer.model.InvCikk ..> jakarta.persistence.GeneratedValue
+hu.anzek.backend.invoce.datalayer.model.InvCikk ..> jakarta.persistence.Id
+hu.anzek.backend.invoce.datalayer.model.InvCikk ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.model.InvCikk ..> jakarta.persistence.GenerationType
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> jakarta.persistence.Column
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> jakarta.persistence.Entity
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> jakarta.persistence.GeneratedValue
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> jakarta.persistence.Id
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> java.lang.Override
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.model.InvUser ..> jakarta.persistence.GenerationType
+hu.anzek.backend.invoce.datalayer.model.Partner ..> jakarta.persistence.Entity
+hu.anzek.backend.invoce.datalayer.model.Partner ..> jakarta.persistence.GeneratedValue
+hu.anzek.backend.invoce.datalayer.model.Partner ..> jakarta.persistence.Id
+hu.anzek.backend.invoce.datalayer.model.Partner ..> jakarta.persistence.ManyToOne
+hu.anzek.backend.invoce.datalayer.model.Partner ..> java.lang.Override
+hu.anzek.backend.invoce.datalayer.model.Partner ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.model.Partner ..> jakarta.persistence.GenerationType
+hu.anzek.backend.invoce.datalayer.model.Partner ..> java.util.Objects
+hu.anzek.backend.invoce.datalayer.model.Partner ..> hu.anzek.backend.invoce.service.enumeralt.FizetesiModok
+hu.anzek.backend.invoce.datalayer.model.Partner ..> hu.anzek.backend.invoce.service.enumeralt.PartnerStatus
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.Entity
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.GeneratedValue
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.Id
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.ManyToOne
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.Table
+hu.anzek.backend.invoce.datalayer.model.Stock ..> org.springframework.boot.autoconfigure.domain.EntityScan
+hu.anzek.backend.invoce.datalayer.model.Stock ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.FetchType
+hu.anzek.backend.invoce.datalayer.model.Stock ..> jakarta.persistence.GenerationType
+hu.anzek.backend.invoce.datalayer.model.Stock ..> java.time.LocalDateTime
+hu.anzek.backend.invoce.datalayer.model.Stock ..> hu.anzek.backend.invoce.service.enumeralt.Mozgasok
+hu.anzek.backend.invoce.service.CimadatService ..> java.lang.Override
+hu.anzek.backend.invoce.service.CimadatService ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.CimadatService ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.service.CimadatService ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.service.CimadatService ..> java.util.List
+hu.anzek.backend.invoce.service.CimadatService ..> hu.anzek.backend.invoce.datalayer.repository.CimadatRepository
+hu.anzek.backend.invoce.service.CimadatService --|> hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService
+hu.anzek.backend.invoce.service.EkezetEltavolito ..> lombok.NoArgsConstructor
+hu.anzek.backend.invoce.service.FizmodMapperConverterImpl ..> java.lang.Override
+hu.anzek.backend.invoce.service.FizmodMapperConverterImpl ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.service.FizmodMapperConverterImpl ..> hu.anzek.backend.invoce.service.enumeralt.FizetesiModok
+hu.anzek.backend.invoce.service.FizmodMapperConverterImpl --|> hu.anzek.backend.invoce.service.interfaces.EnumeraltConverter
+hu.anzek.backend.invoce.service.HelysegnevTarService ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.HelysegnevTarService ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.service.HelysegnevTarService ..> hu.anzek.backend.invoce.datalayer.model.HelysegnevTar
+hu.anzek.backend.invoce.service.HelysegnevTarService ..> java.util.List
+hu.anzek.backend.invoce.service.HelysegnevTarService ..> hu.anzek.backend.invoce.datalayer.repository.HelysegnevTarRepo
+hu.anzek.backend.invoce.service.InvCikkService ..> java.lang.Override
+hu.anzek.backend.invoce.service.InvCikkService ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.InvCikkService ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.service.InvCikkService ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.service.InvCikkService ..> java.util.List
+hu.anzek.backend.invoce.service.InvCikkService ..> hu.anzek.backend.invoce.datalayer.repository.InvCikkRepository
+hu.anzek.backend.invoce.service.InvCikkService --|> hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService
+hu.anzek.backend.invoce.service.InvUserService ..> jakarta.transaction.Transactional
+hu.anzek.backend.invoce.service.InvUserService ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.InvUserService ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.service.InvUserService ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.service.InvUserService ..> java.util.List
+hu.anzek.backend.invoce.service.InvUserService ..> java.util.Optional
+hu.anzek.backend.invoce.service.InvUserService ..> hu.anzek.backend.invoce.datalayer.repository.InvUserRepo
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun ..> java.lang.Override
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun ..> hu.anzek.backend.invoce.datalayer.repository.InvUserRepo
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorLiveRun --|> hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorTestRun ..> java.lang.Override
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorTestRun ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.service.InvoiceSystemAuthentikatorTestRun --|> hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator
+hu.anzek.backend.invoce.service.MozgasokMapperConverterImpl ..> java.lang.Override
+hu.anzek.backend.invoce.service.MozgasokMapperConverterImpl ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.service.MozgasokMapperConverterImpl ..> hu.anzek.backend.invoce.service.enumeralt.Mozgasok
+hu.anzek.backend.invoce.service.MozgasokMapperConverterImpl --|> hu.anzek.backend.invoce.service.interfaces.EnumeraltConverter
+hu.anzek.backend.invoce.service.PartnerService ..> jakarta.persistence.PersistenceContext
+hu.anzek.backend.invoce.service.PartnerService ..> java.lang.Override
+hu.anzek.backend.invoce.service.PartnerService ..> java.lang.SuppressWarnings
+hu.anzek.backend.invoce.service.PartnerService ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.PartnerService ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.service.PartnerService ..> jakarta.persistence.EntityManager
+hu.anzek.backend.invoce.service.PartnerService ..> jakarta.persistence.Query
+hu.anzek.backend.invoce.service.PartnerService ..> java.util.List
+hu.anzek.backend.invoce.service.PartnerService ..> java.util.Optional
+hu.anzek.backend.invoce.service.PartnerService ..> java.util.stream.Collectors
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper
+hu.anzek.backend.invoce.service.PartnerService ..> hu.anzek.backend.invoce.datalayer.repository.PartnerRepository
+hu.anzek.backend.invoce.service.PartnerService --|> hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService
+hu.anzek.backend.invoce.service.PartnerStatusMapperConverterImpl ..> java.lang.Override
+hu.anzek.backend.invoce.service.PartnerStatusMapperConverterImpl ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.service.PartnerStatusMapperConverterImpl ..> hu.anzek.backend.invoce.service.enumeralt.PartnerStatus
+hu.anzek.backend.invoce.service.PartnerStatusMapperConverterImpl --|> hu.anzek.backend.invoce.service.interfaces.EnumeraltConverter
+hu.anzek.backend.invoce.service.StockService ..> jakarta.persistence.PersistenceContext
+hu.anzek.backend.invoce.service.StockService ..> jakarta.transaction.Transactional
+hu.anzek.backend.invoce.service.StockService ..> java.lang.SuppressWarnings
+hu.anzek.backend.invoce.service.StockService ..> org.springframework.beans.factory.annotation.Autowired
+hu.anzek.backend.invoce.service.StockService ..> org.springframework.cache.annotation.CacheEvict
+hu.anzek.backend.invoce.service.StockService ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.service.StockService ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.service.StockService ..> hu.anzek.backend.invoce.datalayer.model.Stock
+hu.anzek.backend.invoce.service.StockService ..> jakarta.persistence.EntityManager
+hu.anzek.backend.invoce.service.StockService ..> jakarta.persistence.Query
+hu.anzek.backend.invoce.service.StockService ..> java.time.LocalDateTime
+hu.anzek.backend.invoce.service.StockService ..> java.time.format.DateTimeFormatter
+hu.anzek.backend.invoce.service.StockService ..> java.util.List
+hu.anzek.backend.invoce.service.StockService ..> hu.anzek.backend.invoce.datalayer.repository.StockRepository
+hu.anzek.backend.invoce.service.UserNotFoundException --|> java.lang.Exception
+hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper ..> org.mapstruct.Mapper
+hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper ..> hu.anzek.backend.invoce.datalayer.dto.InvCikkDto
+hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.datalayer.mapper.InvCikkMapper ..> java.util.List
+hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper ..> org.mapstruct.Mapper
+hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper ..> hu.anzek.backend.invoce.datalayer.dto.InvUserDto
+hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper ..> java.util.List
+hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper ..> org.mapstruct.Mapper
+hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper ..> hu.anzek.backend.invoce.datalayer.dto.PartnerDto
+hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper ..> java.util.List
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> org.mapstruct.Mapper
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> org.mapstruct.Mapping
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> org.springframework.stereotype.Service
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> hu.anzek.backend.invoce.service.FizmodMapperConverterImpl
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> hu.anzek.backend.invoce.service.PartnerStatusMapperConverterImpl
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> java.util.List
+hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper ..> org.mapstruct.factory.Mappers
+hu.anzek.backend.invoce.datalayer.mapper.StockMapper ..> org.mapstruct.Mapper
+hu.anzek.backend.invoce.datalayer.mapper.StockMapper ..> hu.anzek.backend.invoce.datalayer.dto.StockDto
+hu.anzek.backend.invoce.datalayer.mapper.StockMapper ..> hu.anzek.backend.invoce.datalayer.model.Stock
+hu.anzek.backend.invoce.datalayer.mapper.StockMapper ..> java.util.List
+hu.anzek.backend.invoce.datalayer.repository.CimadatRepository ..> org.springframework.data.jpa.repository.Query
+hu.anzek.backend.invoce.datalayer.repository.CimadatRepository ..> org.springframework.data.repository.query.Param
+hu.anzek.backend.invoce.datalayer.repository.CimadatRepository ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.repository.CimadatRepository ..> hu.anzek.backend.invoce.datalayer.model.Cimadat
+hu.anzek.backend.invoce.datalayer.repository.CimadatRepository ..> java.util.List
+hu.anzek.backend.invoce.datalayer.repository.CimadatRepository --|> org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.datalayer.repository.HelysegnevTarRepo ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.repository.HelysegnevTarRepo ..> hu.anzek.backend.invoce.datalayer.model.HelysegnevTar
+hu.anzek.backend.invoce.datalayer.repository.HelysegnevTarRepo --|> org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.datalayer.repository.InvCikkRepository ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.repository.InvCikkRepository ..> hu.anzek.backend.invoce.datalayer.model.InvCikk
+hu.anzek.backend.invoce.datalayer.repository.InvCikkRepository --|> org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.datalayer.repository.InvUserRepo ..> org.springframework.data.repository.query.Param
+hu.anzek.backend.invoce.datalayer.repository.InvUserRepo ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.repository.InvUserRepo ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.datalayer.repository.InvUserRepo ..> java.util.List
+hu.anzek.backend.invoce.datalayer.repository.InvUserRepo --|> org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.datalayer.repository.PartnerRepository ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.repository.PartnerRepository ..> hu.anzek.backend.invoce.datalayer.model.Partner
+hu.anzek.backend.invoce.datalayer.repository.PartnerRepository --|> org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.datalayer.repository.StockRepository ..> org.springframework.stereotype.Repository
+hu.anzek.backend.invoce.datalayer.repository.StockRepository ..> hu.anzek.backend.invoce.datalayer.model.Stock
+hu.anzek.backend.invoce.datalayer.repository.StockRepository --|> org.springframework.data.jpa.repository.JpaRepository
+hu.anzek.backend.invoce.service.interfaces.EnumeraltConverter ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator ..> org.springframework.stereotype.Component
+hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator ..> hu.anzek.backend.invoce.datalayer.model.InvUser
+hu.anzek.backend.invoce.service.interfaces.TorzsadatokCrudAndPrintService ..> java.util.List
+@enduml

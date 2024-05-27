@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package hu.anzek.backend.invoce.controller;
+package hu.anzek.backend.invoce.controller.webControllers;
 
 
 import hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto;
@@ -28,21 +28,21 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class PartnerController {
-
-    private final PartnerViewMapper mapper;    
+  
     private final PartnerService partnerService;    
     private final HelysegnevTarService helysegnevTarService;    
     private final CimadatService cimadatService;    
+    private final PartnerViewMapper viewMapper;
     
     @Autowired
     public PartnerController(PartnerService partnerService,
                              HelysegnevTarService helysegnevTarService,
                              CimadatService cimadatService,
-                             PartnerViewMapper mapper) {
+                             PartnerViewMapper viewMapper) {
         this.partnerService = partnerService;
         this.helysegnevTarService = helysegnevTarService;
         this.cimadatService = cimadatService;
-        this.mapper = mapper;
+        this.viewMapper = viewMapper;
     }    
     
     @GetMapping("/partner/lista")
@@ -71,7 +71,7 @@ public class PartnerController {
     @PostMapping("/partner/ujbevitel")
     public String mentesPartner(@ModelAttribute("ujPartnerDto") 
                                 PartnerCimHelysegDto ujPartnerDto) {
-        this.partnerService.partnerGrafMentes(true, this.mapper.dtoToPartner(ujPartnerDto));
+        this.partnerService.partnerGrafMentes(true, this.viewMapper.dtoToPartner(ujPartnerDto));
         return "redirect:/partner/lista"; 
     }       
     
@@ -81,7 +81,7 @@ public class PartnerController {
                                  Model model) {
         
         Partner partner = partnerService.getById(id);        
-        // model.addAttribute("partnerDto", this.mapper.partnerToDto(partner));
+        // model.addAttribute("partnerDto", this.partnerMapper.partnerToDto(partner));
         model.addAttribute("irszamokHelysegek", this.helysegnevTarService.getAll());
         model.addAttribute("cimek", this.cimadatService.getCimekByIrszam(partner.getPartner_cim().getTelepules().getIrszam()));
         return "partnerekModify";
@@ -90,14 +90,13 @@ public class PartnerController {
     @PostMapping("/partner/modify")
     public String modifyPartner(@ModelAttribute("partnerDto")
                                PartnerCimHelysegDto partnerDto) {        
-        this.partnerService.partnerGrafMentes(false,this.mapper.dtoToPartner(partnerDto));
+        this.partnerService.partnerGrafMentes(false,this.viewMapper.dtoToPartner(partnerDto));
         return "redirect:/partner/lista";
     }
     
     @GetMapping("/partner/torles/{id}")
     public String torolPartner(@PathVariable 
-                               Long id) {
-        
+                               Long id) {        
         partnerService.delete(id);
         return "redirect:/partner/lista";
     }

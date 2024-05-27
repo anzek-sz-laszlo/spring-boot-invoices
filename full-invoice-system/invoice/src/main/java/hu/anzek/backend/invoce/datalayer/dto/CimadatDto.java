@@ -6,12 +6,14 @@ package hu.anzek.backend.invoce.datalayer.dto;
 
 
 import hu.anzek.backend.invoce.datalayer.model.HelysegnevTar;
+import org.springframework.stereotype.Component;
 
 
 /**
  *
  * @author User
  */
+@Component
 public class CimadatDto {
 
     Long id;    
@@ -34,7 +36,31 @@ public class CimadatDto {
         this.kozterulet = kozterulet;
         this.hazszam = hazszam;
     }
-
+    
+    @Override
+    public String toString(){        
+        return  "Cimadat { \n" +
+                "          - id: " + this.id + ", \n" +
+                "          - helyseg { \n" +
+                (this.telepules != null
+                ?
+                    "                       - irszam: " + this.telepules.getIrszam() + ", \n" +   
+                    "                       - helyseg: " + this.telepules.getHelyseg() + ", \n" +  
+                    "                    }, \n" 
+                :
+                    "                       - null ~n" + 
+                    "                    }, "
+                ) +
+                "          - utca: " + this.utca + ", \n" +
+                "          - kozterulet: " + this.kozterulet + ", \n" +      
+                "          - hazszam: " + this.hazszam+ ", \n" +      
+                "}\n";
+    }
+    
+    public void toConsol(String param){
+        System.out.println((param != null ? param : "")+ this.toString());        
+    }
+    
     public Long getId() {
         return id;
     }

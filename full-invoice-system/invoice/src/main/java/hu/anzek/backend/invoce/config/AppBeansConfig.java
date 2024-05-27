@@ -13,9 +13,4 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class AppBeansConfig {
-     
-//    @Bean
-//    public PartnerViewMapper partnerViewMapper() {
-//        return new PartnerViewMapperImpl();
-//    } 
 }

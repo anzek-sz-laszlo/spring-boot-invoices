@@ -16,5 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HelysegnevTarRepo extends JpaRepository<HelysegnevTar,String> {
-    
+
+    public HelysegnevTar getByIrszam(String id);
+    public void deleteByIrszam(String irszam);
 }

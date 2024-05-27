@@ -6,7 +6,10 @@ package hu.anzek.backend.invoce.service;
 
 
 import hu.anzek.backend.invoce.datalayer.dto.PartnerCimHelysegDto;
+import hu.anzek.backend.invoce.datalayer.mapper.CimadatMapper;
 import hu.anzek.backend.invoce.datalayer.mapper.PartnerCimMapper;
+import hu.anzek.backend.invoce.datalayer.mapper.PartnerMapper;
+import hu.anzek.backend.invoce.datalayer.mapper.PartnerViewMapper;
 import hu.anzek.backend.invoce.datalayer.model.Cimadat;
 import hu.anzek.backend.invoce.datalayer.model.Partner;
 import hu.anzek.backend.invoce.datalayer.repository.PartnerRepository;
@@ -15,10 +18,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -27,49 +31,34 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PartnerService implements TorzsadatokCrudAndPrintService<Partner> {
-    
-    // JPA entitások "entityManager" -el való használathoz való injektor 
+   // JPA entitások "entityManager" -el való használathoz való injektor 
     // amely önállóan használható(az Autowired helyett)!
     @PersistenceContext    
-    private EntityManager entityManager;    
-    
+    private final EntityManager entityManager;
     private final PartnerRepository partnerRepo;
-    @Autowired
     private final CimadatService cimService;
-    private final PartnerCimMapper cimMapper;
-    
+    private final PartnerViewMapper viewMapper;
+    private final PartnerCimMapper partnerbolCimMapper;
+
     @Autowired
-    public PartnerService(PartnerRepository partnerRepo,
+    public PartnerService(EntityManager entityManager,
+                          PartnerRepository partnerRepo,
                           CimadatService cimService,
-                          PartnerCimMapper cimMapper) {
+                          PartnerViewMapper viewMapper,
+                          PartnerMapper partnerMapper,
+                          CimadatMapper cimadatMapper,
+                          PartnerCimMapper partnerbolCimMapper) {
+        this.entityManager = entityManager;
         this.partnerRepo = partnerRepo;
         this.cimService = cimService;
-        this.cimMapper = cimMapper;
+        this.viewMapper = viewMapper;
+        this.partnerbolCimMapper = partnerbolCimMapper;
     }
-  
-    public List<PartnerCimHelysegDto> getAllFulDtoList() {
-   
-        // ez JPQL szintaxissal -
-        String jpql = "SELECT new PartenerCimHelysegDto("
-                + "     p.id AS partner_id, "
-                + "     p.megnevezes AS partner_megnevezes, "
-                + "     p.adoszam AS partner_adoszam, "
-                + "     p.kozossegi_asz AS partner_kozossegi_asz, "
-                + "     p.vevo_szallito AS partner_vevo_szallito, "
-                + "     p.fizmod AS partner_fizmod, "
-                + "     c.id AS cimadat_id, "
-                + "     h.irszam AS helyseg_irszam, "
-                + "     h.helyseg AS helyseg_helyseg, "
-                + "     c.utca AS cimadat_utca, "
-                + "     c.kozterulet AS cimadat_kozterulet, "
-                + "     c.hazszam AS cimadat_hazszam, "
-                + "     p.egyeb_info AS partner_egyeb_info "
-                + ") "
-                + " FROM Partner p JOIN p.partner_cim c JOIN c.telepules h"; 
-        // és a JPQL lekérdezéssel:
-        // Query query = entityManager.createQuery(jpql);
     
+    public List<PartnerCimHelysegDto> getAllFulDtoList() {
+
         // Ez natív MySql szintaxissal és lekérdezéssel:
+        String jpql;
         jpql = "SELECT "
                 + "     p.id AS partner_id, "
                 + "     p.megnevezes AS partner_megnevezes, "
@@ -115,31 +104,33 @@ public class PartnerService implements TorzsadatokCrudAndPrintService<Partner> {
     }
 
     @Override
-    public Partner getById(Long id) {
-        Optional<Partner> optPart = this.partnerRepo.findById(id);
-        if(optPart.isPresent()){
-            System.out.println("XX2: A KIOLVASOTT PARTNER ADATAI : \n" + optPart.get().toString() );
-        }
+    public Partner getById(Long id) {        
         return this.partnerRepo.findById(id).orElse(null);
     }
 
     @Override
+    @Transactional
     public Partner create(Partner entity) {
-        if (entity.getId() == null) {     
-            return this.partnerRepo.save(entity);
-        }
-        return null;        
+        if((entity == null) || (entity.getId() != null)) {
+            return null;
+        }        
+        return this.partnerRepo.save(entity);        
     }
 
     @Override
+    @Transactional
     public Partner update(Partner entity) {
-        if ((entity.getId() != null) && (this.partnerRepo.existsById(entity.getId()))) {    
+        if((entity == null) || (entity.getId() != null)) {
+            return null;
+        }        
+        if (this.partnerRepo.existsById(entity.getId())) {    
             return this.partnerRepo.save(entity);
         }
         return null;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
         if (id != null){
             if (this.partnerRepo.existsById(id)) { 
@@ -166,22 +157,66 @@ public class PartnerService implements TorzsadatokCrudAndPrintService<Partner> {
 
     public Partner partnerGrafMentes(boolean ujBevitel, Partner partner) {
         if(ujBevitel){
-            if(partner != null){                
-                // kimeppeljük a címadatot a partner entitásból:
-                Cimadat cim = this.cimMapper.setCimadatFromPartner(partner);
-                // adatbázisba mentjük és rögvest vissza is olvassuk, hogy az "id" -je meglegyen!    
-                cim = this.cimService.create(cim);
-                // beírjuk a "cimadat_id" -t a partner entitásba (valójában átírjuk a teljes címet:
-                partner = this.cimMapper.setPartnerCimFromCimadat(cim, partner);
-                // a fenti művelet ezzel az alábbival equivalens, de ha már megírtuk jó az úgy:
-                // partner.setPartner_cim(cim); 
-                return this.create(partner);                
+            // újbevitel végrehajtása:
+            if((partner != null) &&(partner.getId() == null)){    
+                if(this.partnerSave(partner)) return partner; else return null;               
             }else{
                 return null;
             }
         }else{
             // módosítás végrehajtása:
-            return null;
+            if((partner != null) && (partner.getId() != null) && (this.getById(partner.getId()) != null)){ 
+                if (this.partnerSave(partner)){         
+                    return partner;
+                }
+            }
         }
+        return null;
+    }
+    
+    // gyorsítótár ürítése (itt, úgy, mint a gráf csúcspontján!)
+    @CacheEvict 
+    // a tranzakció kezelés ezen hívások alatti mindegyik tranzakció
+    //   egy perzisztenci kontextusban (más néven tranzakciós hatókörben, tranazkciós proxiben) lesz kezelve
+    // - ha Exception történik a a kontextus RollBack/Revert -el zárul be - vissza vonással, máskülönben Apply -al, elfogadással
+    @Transactional
+    private boolean partnerSave(Partner partner) {
+        // 1, kimeppeljük a címadatot a partner entitásból (hogy előszőr ezt, külön, lementhessük)
+        //      mert akkor lesz ID -je, amit visszaírhatunk a partner entitásba...
+        Cimadat cim = this.partnerbolCimMapper.setCimadatFromPartner(partner);
+        
+        // a címhez adhatunk létező címkódot (id-t) -ha már létező címmel vittük fel a partnert, 
+        // vagy azzal módosítottuk:
+        // Ha a címkód "null", akkor újként mentjük és rögvest vissza is olvassuk, hogy az "id" -je meglegyen!            
+        if(cim.getId() == null) cim = this.cimService.create(cim);
+        else cim = this.cimService.update(cim);
+        
+        if (cim != null) {
+            cim.toConsol("Sikeres Cimadat adatbazis mentes: ");
+            // 3, átírjuk a "cimadat_id" -t a partner entitásba (valójában átírjuk bele a teljes címet):
+            // partner = this.partnerbolCimMapper.setPartnerCimFromCimadat(cim, partner);
+            partner.setPartner_cim(cim);
+            // 4, kimentjuk adatbazisba:
+            partner = this.partnerRepo.save(partner);
+            return true;
+        } else {
+            System.out.println("Cimadat == null - adatmentes sikertelen");
+        }
+        return false;
+    }
+    
+    public PartnerCimHelysegDto createFromDto(PartnerCimHelysegDto createdPartner) {
+        return this.viewMapper
+                   .partnerToDto(this.partnerGrafMentes(true,this.viewMapper.dtoToPartner(createdPartner)));        
+    } 
+        
+    public PartnerCimHelysegDto updateFromDto(PartnerCimHelysegDto updatedPartner) {
+        return this.viewMapper
+                   .partnerToDto(this.partnerGrafMentes(false,this.viewMapper.dtoToPartner(updatedPartner)));        
+    }
+
+    @Override
+    public Partner getById(String id) {
+        return this.getById(Long.getLong(id));
     }
 }
