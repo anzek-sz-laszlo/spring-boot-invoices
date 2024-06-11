@@ -13,18 +13,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
  *
  * @author User
  */
 @Service
-public class InvUserService {
+public class InvUserService {    
+    
+    private final InvUserRepo invUserRepo;
     
     @Autowired
-    InvUserRepo invUserRepo;
-
-    public InvUserService() {
+    public InvUserService(InvUserRepo invUserRepo) {
+        this.invUserRepo = invUserRepo;
     }
     
     /**    

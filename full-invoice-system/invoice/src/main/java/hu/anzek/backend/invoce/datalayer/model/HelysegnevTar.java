@@ -7,6 +7,7 @@ package hu.anzek.backend.invoce.datalayer.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.io.Serializable;
 import org.springframework.stereotype.Repository;
 
 
@@ -14,12 +15,11 @@ import org.springframework.stereotype.Repository;
  *
  * @author User
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Repository
 @Entity
-public class HelysegnevTar {
+public class HelysegnevTar implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     
     @Id
     private String irszam;

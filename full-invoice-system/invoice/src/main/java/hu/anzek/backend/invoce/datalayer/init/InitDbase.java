@@ -18,13 +18,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InitDbase {
+        
+    private final InvUserService invUserService;    
+    private final InvUserRepo userRepo;
     
     @Autowired
-    private InvUserService invUserService;
-    @Autowired
-    private InvUserRepo userRepo;
-    
-    public InitDbase(){
+    public InitDbase(InvUserService invUserService,
+                     InvUserRepo userRepo){
+        this.invUserService = invUserService;
+        this.userRepo = userRepo;
     }
     
     /**

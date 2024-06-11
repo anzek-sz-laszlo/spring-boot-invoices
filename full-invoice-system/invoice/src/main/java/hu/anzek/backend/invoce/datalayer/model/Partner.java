@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
@@ -20,12 +21,11 @@ import org.springframework.stereotype.Repository;
  * "lombok" nyelvi kiegészítés
  * @author User
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Repository
 @Entity
-public class Partner {
+public class Partner implements Serializable {
+
+    private static final long serialVersionUID = 1L;
         
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

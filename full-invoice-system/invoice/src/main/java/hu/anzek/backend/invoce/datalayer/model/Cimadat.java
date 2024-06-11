@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
@@ -19,13 +20,11 @@ import org.springframework.stereotype.Repository;
  *
  * @author User
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Repository
 @Entity
-public class Cimadat {
- 
+public class Cimadat implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;    

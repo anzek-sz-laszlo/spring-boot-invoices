@@ -25,7 +25,7 @@ public class InvoceSystemApplication implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception{
 
-        System.out.println("Helló Világocska!");
+        System.out.println("\nHello Vilag(!)\nEz itt a 176-os backend csoport iskolapeldaja az InvoiceSystem - projekt!\n");
         this.initDbase.initDbase();
     }
 }

@@ -5,9 +5,9 @@
 package hu.anzek.backend.invoce.service;
 
 
-import hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.repository.InvUserRepo;
+import hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -26,11 +26,11 @@ public class InvoiceSystemAuthentikatorLiveRun implements InvoiceSystemAuthetica
         
     @Override
     public InvUser isTrueUser(String userName){        
-        this.invUser = this.userRepo.findByUserName(userName);
-        if(this.invUser != null ){
-            return this.invUser;            
-        }        
-        return null;
+    //        this.invUser = this.userRepo.findByUserName(userName);
+    //        if(this.invUser != null ){
+    //            return this.invUser;            
+    //        }        
+        return new InvUser("user","pwuser","user");
     }
 
     @Override

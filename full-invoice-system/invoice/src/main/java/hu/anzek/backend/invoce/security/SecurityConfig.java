@@ -45,7 +45,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/cimadat/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/api/cimadat/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/cimadat/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/api/cimadat/**").authenticated()                    
+                .requestMatchers(HttpMethod.DELETE, "/api/cimadat/**").authenticated()       
+                .requestMatchers(HttpMethod.DELETE, "/api/megrendelesek/**").authenticated()  
+                .requestMatchers(HttpMethod.DELETE, "/api/szamlak/**").authenticated()  
                 .anyRequest().permitAll()
             )                
             .httpBasic(withDefaults());
