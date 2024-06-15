@@ -19,14 +19,14 @@ public class FizmodMapperConverterImpl implements EnumeraltConverter <FizetesiMo
 
     @Override
     public Integer convertToAdatbazisTablaMezoFromEntitasAttributum(FizetesiModok attribute) {
-        return attribute.getIntValue();
+        return attribute.getFizmod();
     }
 
     @Override
     public FizetesiModok convertToEntitasAttributumFromAdatbazisTablaMezo(Integer dbData) {
         if (dbData != null) {
             for (FizetesiModok modok : FizetesiModok.values()) {
-                if (modok.getIntValue() == dbData) {
+                if (modok.getFizmod() == dbData) {
                     return modok;
                 }
             }

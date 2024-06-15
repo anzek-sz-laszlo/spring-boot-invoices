@@ -98,6 +98,22 @@ public class MegrendelesService {
     }
     
     /**
+     * automatikus megrendelés-rekord lockolás optimista eljárással
+     * @return a zárolásra verziószámmal megjelölt rekordok listája
+     */
+    public List<Megrendeles> getAllBillableOptimist() {
+        return this.megrendelesRepo.findAllBillableOptimist(LocalDate.now()).orElse(null);
+    }
+   
+    /**
+     * automatikus megrendelés-rekord lockolás pesszimista eljárással
+     * @return 
+     */
+    public List<Megrendeles> getAllBillablePessimist() {
+        return this.megrendelesRepo.findAllBillablePessimist(LocalDate.now()).orElse(null);
+    }
+   
+    /**
      * .
      * Megrendelési példány zárolása feldolgozáshoz, 
      * vagy feloldása, de ez utóbbit nem használjuk, mert ha számlázott lesz, akkor már úgysem vehetjük újra elő! 

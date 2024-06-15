@@ -10,20 +10,30 @@ package hu.anzek.backend.invoce.service.enumeralt;
  * @author User
  */
 public enum FizetesiModok {
-    KESZPENZ_CASH(0),
-    ATUTALAS_TRANSFER(1),
-    BANKKARTYA_HITEL_BANKDEBIT_CREDIT(2),
-    EGYEB_OTHER(3);
+    KESZPENZ_CASH(0,0),
+    ATUTALAS_TRANSFER(1,8),
+    BANKKARTYA_HITEL_BANKDEBIT_CREDIT(2,3),
+    EGYEB_OTHER(3,3);
+    
+    private final int fizmod;
+    private final int fizetesiHataridoNapok;   
 
-    public final int fizmod;
-    private FizetesiModok(int fizmod) {
+    // itt allább, a konstruktorban megadott paraméterfelsorolás sorrendje fontos, 
+    // mert a fenti enumerációk zárójelében megadott sorrendjét jelentik!
+    private FizetesiModok(int fizmod,
+                          int fizetesiHataridoNapok) {
         this.fizmod = fizmod;
+        this.fizetesiHataridoNapok = fizetesiHataridoNapok;
     }
     
-    public int getIntValue(){        
+    public int getFizmod(){        
         return this.fizmod;
     }
 
+    public int getFizetesiHataridoNapok() {
+        return this.fizetesiHataridoNapok;
+    }
+    
     public FizetesiModok getValue(int intValue){
         switch(intValue){
             case 0 : return this.KESZPENZ_CASH;

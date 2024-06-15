@@ -56,8 +56,7 @@ public class InvoiceService {
      */
     @Transactional
     public Invoice getInvoice(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElse(null);
-        
+        Invoice invoice = this.invoiceRepository.findById(id).orElse(null);        
         // Ezzel kényszerítjük a perzisztencia kontextust, hogy a proxi-tételeket is hozza be, vagyis
         // betöltjük az "items" listamező tartalmát:
         invoice.toConsol("szamla:");
@@ -115,7 +114,9 @@ public class InvoiceService {
                 // a rekord lock-olása:
                 // A feldolgozáshoz zároljuk a megrendelési rekordot. 
                 // Minimálisan, az ellenőrzés idejére, 
-                // - viszont, ha minden rendben van "nála", akkor csak a számlakászítő futása után oldjuk fel!                
+                // - viszont, ha minden rendben van "nála", akkor:
+                // - ha számlakészült belőle így is marad véglegesen           
+                // - ha nem, akkor feloldjuk
                 if(this.megrendelesService.updateZarolas(megrendeles, true)){
                     // most már nyugodtan dolgozhatunk vele,és legelsőként is kiolvassuk a tételeit:
                     megrendeles.getTetelek().size();
@@ -149,7 +150,7 @@ public class InvoiceService {
                 if(szamlazhato){ 
                     // a zárolást (a rekordfoglalást) meghagyva, le is zárjuk a rendelést:        
                     // adatbázisba majd a számlakészítő menti el, 
-                    // (már ha sikerült neki a számláakészítés):
+                    // (már ha sikerült neki a számlakészítés):
                     megrendeles.setLezarva(true); 
                     // leszámlázzuk:
                     Invoice invoice = this.createInvoice(megrendeles);
@@ -158,7 +159,10 @@ public class InvoiceService {
                         megrendeles.setSzamlaszam(invoice.getSzamlaszam());                    
                         szamlazva.add(megrendeles); 
                     }else{
-                        System.out.println("A Rsz(" + megrendeles.getId() + ") alapjan nem sikerult szamlat kesziteni!");
+                        System.out.println("A Rsz(" + megrendeles.getId() + ") rendelesbol nem sikerult szamlat kesziteni!");
+                        // feloldjuk a zárolást, elengedjük a rekordot és nem számlázzuk:
+                        megrendeles.setZarolva(false);
+                        this.megrendelesService.updateMegrendeles(megrendeles);                        
                     }
                 }else{
                     // feloldjuk a zárolást, elengedjük a rekordot és nem számlázzuk:
@@ -172,6 +176,77 @@ public class InvoiceService {
         }
     }
 
+    public List<MegrendelesDto> automataKeszrejelentoAutoLocked() {
+        List<Megrendeles> lista = new ArrayList<>();        
+        List<Megrendeles> szamlazva = new ArrayList<>();
+        lista = this.megrendelesService.getAllBillablePessimist();
+        if(lista != null){
+            for(Megrendeles megrendeles : lista){
+                boolean szamlazhato = true;
+                // címke egy loop utasításhoz:
+                kiugrasiSzint:
+                // Mostmár nem a konkurens kérések miatt zárolunk (azt a JPA megteszi), a listában szereplő rekordok már zároltak 
+                // csakis az előzőekben már működő üzleti logika miatt, vagyis a feldolgozás miatt...                         
+                megrendeles.setZarolva(true);
+                // kiolvassuk a tételeit:
+                megrendeles.getTetelek().size();
+                List<MegrendelesTetel> items = megrendeles.getTetelek();
+                // ha előzőekben már lezárt (manuálisan, vagy gépi úton maradt így), akkor azt elfogadva,
+                // csak azt nézzük meg, van-e most legalább egy olyan tétele, ami készletről kifuttatható 
+                // maga a rendelés lezárt-e (számlázható-e?)
+                if(megrendeles.isLezarva()){
+                    szamlazhato = false;
+                    for(MegrendelesTetel item : items){
+                        // egyenként megnézzük van-e valamelyiknek kellő fedezete:
+                        if(item.getMennyiseg() <= item.getInv_cikk().getKeszleten_van()){
+                            // van fedezete:
+                            szamlazhato = true;
+                            // elhagyjuk a ciklust:
+                            break;
+                        }
+                    }        
+                }else{
+                    // alaphelyzetben:
+                    for(MegrendelesTetel item : items){
+                        // egyenként megnézzük van-e kellő fedezete:
+                        if(item.getMennyiseg() > item.getInv_cikk().getKeszleten_van()){
+                            // sajnos nincs fedezete:
+                            szamlazhato = false;
+                            // elhagyjuk a ciklust:
+                            break;
+                        }
+                    }
+                }
+            
+                if(szamlazhato){ 
+                    // a zárolást (a rekordfoglalást) meghagyva, le is zárjuk a rendelést:        
+                    // adatbázisba majd a számlakészítő menti el, 
+                    // (már ha sikerült neki a számlakészítés):
+                    megrendeles.setLezarva(true); 
+                    // leszámlázzuk:
+                    Invoice invoice = this.createInvoice(megrendeles);
+                    if(invoice != null){
+                        invoice.toConsol("uj szamla keszult: ");
+                        megrendeles.setSzamlaszam(invoice.getSzamlaszam());                    
+                        szamlazva.add(megrendeles); 
+                    }else{
+                        System.out.println("A Rsz(" + megrendeles.getId() + ") rendelesbol nem sikerult szamlat kesziteni!");
+                        // feloldjuk a zárolást, elengedjük a rekordot és nem számlázzuk:
+                        megrendeles.setZarolva(false);
+                        this.megrendelesService.updateMegrendeles(megrendeles);                        
+                    }
+                }else{
+                    // feloldjuk a zárolást, elengedjük a rekordot és nem számlázzuk:
+                    megrendeles.setZarolva(false);
+                    this.megrendelesService.updateMegrendeles(megrendeles);
+                } 
+            }
+            return this.orderMapper.toDtos(szamlazva);
+        }else{
+            return null;
+        }
+    }
+    
     /**
      * Kézi készrejelentő.
      * Csak akkor jelenti készre, ha legalább egy megrendelési eleme kiszámlázható!
@@ -195,7 +270,9 @@ public class InvoiceService {
                 break;
             }
         }
-        if(szamlazhato){     
+        if(szamlazhato){
+            // lezárjuk (végelegesítettük a rendelést -> átadtuk teljesítésre):
+            megrendeles.setLezarva(true); 
             // zároljuk:
             if(this.megrendelesService.updateZarolas(megrendeles,true)){
                 // ha sikerült a zárolás leszámlázzuk:
@@ -204,6 +281,10 @@ public class InvoiceService {
                     invoice.toConsol("uj szamla keszult: ");
                     megrendeles.setSzamlaszam(invoice.getSzamlaszam());                    
                     return true;
+                }else{
+                    // feloldjuk a zárolást, elengedjük a rekordot és nem számlázzuk:
+                    megrendeles.setZarolva(false);
+                    this.megrendelesService.updateMegrendeles(megrendeles);                    
                 }
             }
         }    
@@ -216,7 +297,35 @@ public class InvoiceService {
      * @return 
      */
     public Map<Double, Double> getAfaOsszesito(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElse(null);
+        if (invoice == null) {
+            return null;
+        }
+        // inicializálunk egy MAP kollekciót:
+        // - az áfa-kulcs lesz a kulcs 
+        // - és a hozzátartozó összeg lesz az ÁFA-érték 
         Map<Double, Double> afaOsszesito = new HashMap<>();
+        // lekérjük a számlatételeket:
+        invoice.getItems().size();
+        List<InvoiceItem> items = invoice.getItems();
+        // tételenként feldolgozzuk - melyik-  melyik áafkulcsot a megfelelő Map<K,V> -be tesszük
+        // (ha nincs mégolyan, csinálunk)
+        for (InvoiceItem item : items) {
+              // ez az ÁFA-kulcshoz tartozó nettó összeg:
+            double itemOsszeg = this.round2(item.getEgyseg_ar() * item.getMennyiseg());    
+            // egy létező kulcs ellenőrzése:
+            // a "getOrDefault(...)" metódus visszaadja a kulcshoz tartozó Value -t, 
+            // (azaz az aktuális Áfához tartozó eddig behalmozott értéket), 
+            // - már ha az létezik, mert ha nem létezik, akkor 0.0-t ad vissza és ehhez halmozzuk a mostani értékadatot.
+            // a put( kulcs, value ) pedig vagy felülírja a létező értéket, vagy egy új kulcspárt hoz létre, ha még nem volt ilyen kulcs
+            double eddigVolt = afaOsszesito.getOrDefault(item.getAfa_kulcs(), 0.0);
+            afaOsszesito.put(item.getAfa_kulcs(), this.round2( eddigVolt + itemOsszeg));
+            // 18, 4568.45 + 100 -> 4668.45
+            // 27, 1526849.12
+            //  0, 125.00
+        }
+        // mert a múlt pénteken délután elmentem kávézni...
+        if(invoice.getBrutto_ertek() == 0.0) this.szamlaVegeJavito(invoice);        
         return afaOsszesito;
     }    
     
@@ -240,17 +349,17 @@ public class InvoiceService {
      */
     private Invoice invoice(Megrendeles m){
         Invoice invoice = new Invoice();
-        m.getTetelek().size();
-        List<MegrendelesTetel> mtList = m.getTetelek();
         List<InvoiceItem> items = new ArrayList<>();
-        boolean lehetSzamla = false;
-        Double sum_afak = 0.00;
+        
+        m.getTetelek().size();
+        List<MegrendelesTetel> mtList = m.getTetelek();        
+        Double sum_afak = 0.00; 
         Double sum_alapok = 0.00;
         for(MegrendelesTetel tetel : mtList){  
             // csak ha van a mgrendelt mennyiségből elegendő:
             if(tetel.getMennyiseg() <= tetel.getInv_cikk().getKeszleten_van()) {
                 InvoiceItem item = new InvoiceItem( invoice, 
-                                                    tetel.getId(), 
+                                                    tetel.getInv_cikk().getId(), 
                                                    tetel.getInv_cikk().getMegnevezes(), 
                                                     tetel.getInv_cikk().getMennyegys(), 
                                                     tetel.getInv_cikk().getAfa_kulcs(), 
@@ -263,14 +372,10 @@ public class InvoiceService {
                 sum_alapok += item.getEgyseg_ar() * item.getMennyiseg();
                 // hozzáadjuk a számla kiszámlázott tételeihez:
                 items.add(item);
-                lehetSzamla = true;
             }
         }
-        if(lehetSzamla){
+        if( ! items.isEmpty()){
             invoice.setMegrendeles( m );
-            invoice.setKeszult(LocalDate.now());
-            invoice.setMegjegyzes(m.getMegjegyzes());
-            invoice.setSzallitas_napja(m.getMikorra());
             invoice.setSzallito_megnevezes(m.getSzallito().getMegnevezes());
             invoice.setSzallito_adoszam(m.getSzallito().getAdoszam());
             invoice.setSzallito_kozossegi_asz (m.getSzallito().getKozossegi_asz());
@@ -288,9 +393,42 @@ public class InvoiceService {
             invoice.setVevo_kozterulet (m.getVevo().getPartner_cim().getKozterulet());
             invoice.setVevo_hazszam (m.getVevo().getPartner_cim().getHazszam()); 
             invoice.setItems(items);
-            invoice.setKeszult(LocalDate.now());
             invoice.setElszamolasi_valuta("HUF");
+            invoice.setKeszult(LocalDate.now());            
+            invoice.setMegjegyzes(m.getMegjegyzes());
+            invoice.setSzallitas_napja(m.getMikorra());            
+            invoice.setVevo_fizmod(m.getVevo().getFizmod().name());
+            invoice.setFizetesi_hatarido(LocalDate.now().plusDays(m.getVevo().getFizmod().getFizetesiHataridoNapok()));                       
+            invoice.setAdo_ertek(this.round2(sum_afak));
+            invoice.setNetto_ertek(this.round2(sum_alapok));
+            invoice.setBrutto_ertek(this.round2(sum_afak + sum_alapok));
         }        
-        if(lehetSzamla) return invoice; else return null;
+        if( ! items.isEmpty()) return invoice; else return null;
+    }
+
+    /**
+     * . mert kávé szüntre mentem.
+     * Tanulság:
+     * - péntek délután sose menj kávé szünetre!
+     * @param invoice a lemaradt adatokat atrtalmazó entitás
+     */
+    @Transactional
+    private void szamlaVegeJavito(Invoice invoice) {
+        Double sum_afak = 0.00;
+        Double sum_alapok = 0.00;
+        for(InvoiceItem im : invoice.getItems()) {
+            sum_afak += this.round2(im.getAfa_kulcs() / 100 * im.getEgyseg_ar() * im.getMennyiseg());
+            sum_alapok += this.round2(im.getEgyseg_ar() * im.getMennyiseg());
+        }
+        invoice.setAdo_ertek(this.round2(sum_afak));
+        invoice.setNetto_ertek(this.round2(sum_alapok));
+        invoice.setBrutto_ertek(this.round2(sum_afak + sum_alapok)); 
+        Megrendeles m = invoice.getMegrendeles();
+        invoice.setVevo_fizmod(m.getVevo().getFizmod().toString());  
+        LocalDate keszult = invoice.getKeszult();
+        invoice.setFizetesi_hatarido(keszult.now().plusDays(m.getVevo().getFizmod().getFizetesiHataridoNapok()));                    
+        
+        // elmentjük a kiegészítést:
+        this.invoiceRepository.save(invoice);
     }
 }

@@ -5,8 +5,8 @@
 package hu.anzek.backend.invoce.datalayer.dto;
 
 
+import java.util.List;
 import org.springframework.stereotype.Component;
-
 
 /**
  *
@@ -18,18 +18,17 @@ public class InvUserDto {
     private String userName;    
     private String pw;
     private String ls;
-
+    private List<String> authorities;
+    
     public InvUserDto() {
     }
 
-    public InvUserDto(long id,
-                      String userName,
-                      String pw,
-                      String ls) {
-        this.id = id;
-        this.userName = userName;
-        this.pw = pw;
-        this.ls = ls;
+    public List<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
     }
 
     public String getUserName() {

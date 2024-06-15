@@ -62,15 +62,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <tr>
                 <th>Készítés dátuma</th>
                 <th>Szállítás napja</th>
+                <th>Fizetési mód</th>
+                <th>Fizetési határidő</th>
             </tr>
             <tr>
                 <td th:text="${invoice.keszult}">kiállítás-dátuma</td>
                 <td th:text="${invoice.szallitas_napja}">tényteljesítés-dátuma</td>
+                <td th:text="${invoice.vevo_fizmod}">vevő-fizetési-mód</td>
+                <td th:text="${invoice.fizetesi_hatarido}">fizetési-határidő</td>
             </tr>
         </table>
         <h3>Számla tételek</h3>
         <table>
-            <tr>
+            <tr border="1" align="left">
                 <th>Cikk kód</th>
                 <th>Megnevezés</th>
                 <th>Mennyiség</th>
@@ -81,15 +85,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <th>Bruttó</th>
                 <th>Megjegyzés</th>
             </tr>
-            <tr border="1" align="left" th:each="item : ${iTetelek}">
+            <tr border="1" align="right" footer-formatter="totalFormatter" th:each="item : ${invoice.items}">
                 <td th:text="${item.cikk_kod}">cikKod</td>
                 <td th:text="${item.megnevezes}">megnevezes</td>
-                <td th:text="${item.mennyiseg}">mennyiseg</td>
-                <td th:text="${item.egyseg_ar}">egysegAr</td>
-                <td th:text="${item.afa_kulcs}">afaKulcs</td>                
-                <td th:text="${item.mennyiseg * item.egyseg_ar}">nettó</td>
-                <td th:text="${(item.afa_kulcs / 100) * item.mennyiseg * item.egyseg_ar}">adótartalom</td>
-                <td th:text="${(1 + (item.afa_kulcs / 100)) * item.mennyiseg * item.egyseg_ar}">bruttó</td>
+                <!--<td th:text="${item.mennyiseg}">mennyiseg</td>-->
+                <td align="right" <span th:inline="text">[[ ${#numbers.formatDecimal(item.mennyiseg, 1, 'COMMA', 2, 'POINT')} ]]</span></td>                
+                <!--<td th:text="${item.egyseg_ar}">egysegAr</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(item.egyseg_ar, 2, 'COMMA', 2, 'POINT')}]]</span></td>                
+                <td th:text="${item.afa_kulcs} + ' %'">afaKulcs</td>                
+                <!--<td align="right" <span th:inline="text">[[${#numbers.formatDecimal(item.afa_kulcs, 2, 'COMMA', 2, 'POINT')}]]</span></td>-->                
+                <!--<td th:text="${item.mennyiseg * item.egyseg_ar}">nettó</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal((item.mennyiseg * item.egyseg_ar), 2, 'COMMA', 2, 'POINT')}]]</span></td>                
+                <!--<td th:text="${(item.afa_kulcs / 100) * item.mennyiseg * item.egyseg_ar}">adótartalom</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(((item.afa_kulcs / 100) * item.mennyiseg * item.egyseg_ar), 2, 'COMMA', 2, 'POINT')}]]</span></td>                
+                <!--<td th:text="${(1 + (item.afa_kulcs / 100)) * item.mennyiseg * item.egyseg_ar}">bruttó</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(((1 + (item.afa_kulcs / 100)) * item.mennyiseg * item.egyseg_ar), 2, 'COMMA', 2, 'POINT')}]]</span></td>                
                 <td th:text="${item.megjegyzes}">megjegyzes</td>
             </tr>
         </table>
@@ -98,25 +108,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <table>
             <tr>
                 <th>ÁFA-kulcs</th>
-                <th>áfaTartalom</th>
+                <th>Nettó-érték</th>
+                <th>ÁFA-érték</th>
             </tr>
             <tr th:each="afa : ${afaTartalom}">
                 <td th:text="${afa.key + ' %'}">Áfa Kulcs</td>
-                <td th:text="${afa.value + ' HUF'}">Összeg</td>             
+                <!--<td align="right" <span th:inline="text">[[${#numbers.formatDecimal(afa.key, 1, 'COMMA', 2, 'POINT') + ' %'}]]</span></td>-->
+                <!--<td th:text="${afa.value}">A kulcshoz tartozó nettó összeg</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(afa.value, 1, 'COMMA', 2, 'POINT')}]]</span></td>
+                <!--<td th:text="${(afa.key == 0 ? afa.value : afa.value * afa.key / 100)}">Az ÁFA-összeg</td>--> 
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal((afa.key == 0 ? afa.value : afa.value * afa.key / 100), 1, 'COMMA', 2, 'POINT')}]]</span></td>                
             </tr>    
         </table>
         <br>
         <h3>Számla összesítő</h3>
         <table>            
             <tr>
-                <th>Nettó érték</th>
-                <th>ÁfaTartalom</th>
-                <th>Bruttó érték</th>
+                <th>Számla nettó érték</th>
+                <th>Számla Áfa érték</th>
+                <th>Számla bruttó érték</th>
             </tr>
             <tr>
-                <td th:text="${invoice.netto_ertek + ' HUF'}">számla-nettó_érték</td>
-                <td th:text="${invoice.ado_ertek + ' HUF'}">számla-áfa_tartalom</td>
-                <td th:text="${invoice.brutto_ertek + ' HUF'}">számla-bruttó_érték</td>
+                <!--<td th:text="${invoice.netto_ertek}">számla-nettó_érték</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(invoice.netto_ertek, 1, 'COMMA', 2, 'POINT') + ' Huf'}]]</span></td>                
+                <!--<td th:text="${invoice.ado_ertek}">számla-áfa_tartalom</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(invoice.ado_ertek, 1, 'COMMA', 2, 'POINT') + ' Huf'}]]</span></td>                
+                <!--<td th:text="${invoice.brutto_ertek}">számla-bruttó_érték</td>-->
+                <td align="right" <span th:inline="text">[[${#numbers.formatDecimal(invoice.brutto_ertek, 1, 'COMMA', 2, 'POINT') + ' Huf'}]]</span></td>                
             </tr>            
         </table>
         <br>

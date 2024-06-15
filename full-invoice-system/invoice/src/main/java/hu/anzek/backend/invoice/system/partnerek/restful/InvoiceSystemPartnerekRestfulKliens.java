@@ -226,7 +226,7 @@ public class InvoiceSystemPartnerekRestfulKliens {
         newPartner.setPartner_adoszam(aSzam);
         newPartner.setPartner_kozossegi_asz(kozossegiAsz);
         newPartner.setPartner_vevo_szallito(vevoSzallito.getIntValue());
-        newPartner.setPartner_fizmod(fizmod.getIntValue());        
+        newPartner.setPartner_fizmod(fizmod.getFizmod());        
         newPartner.setPartner_egyeb_info(egyeb);
         newPartner.setCimadat_id(cimId);
         newPartner.setCimadat_utca(utca);
@@ -344,7 +344,7 @@ public class InvoiceSystemPartnerekRestfulKliens {
             updatedPartner.setPartner_adoszam(aSzam);
             updatedPartner.setPartner_kozossegi_asz(kozossegiAsz);
             updatedPartner.setPartner_vevo_szallito(vevoSzallito.getIntValue());
-            updatedPartner.setPartner_fizmod(fizmod.getIntValue());        
+            updatedPartner.setPartner_fizmod(fizmod.getFizmod());        
             updatedPartner.setPartner_egyeb_info(egyeb);
             updatedPartner.setCimadat_id(cimId);
             updatedPartner.setCimadat_id(cimId);

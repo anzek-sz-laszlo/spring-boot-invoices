@@ -50,6 +50,7 @@ public class Invoice implements Serializable {
     private String vevo_utca;
     private String vevo_kozterulet;
     private String vevo_hazszam;
+    private String vevo_fizmod;
     // a számla hivatkozási alapja 
     // ez egy sima, egy az egyhez kapcsolat!
     // - A fetch "EAGER betöltési stratégia" -> a kapcsolódó "Megrendeles" entitás mindenkor be lesz betöltve!
@@ -86,6 +87,8 @@ public class Invoice implements Serializable {
     
     @Override
     public String toString(){
+        if(this == null) return "";
+        
         String tetelLista = "{ ";
         for(InvoiceItem e : this.tetelek){
             tetelLista += e.toString() + " ";
@@ -119,7 +122,7 @@ public class Invoice implements Serializable {
                 + "     }" + "\n";
     }
     
-    public void toConsol(String s){
+    public void toConsol(String s){        
         System.out.println( s + "\n" + this.toString());
     }
     
@@ -273,6 +276,14 @@ public class Invoice implements Serializable {
 
     public void setVevo_hazszam(String vevo_hazszam) {
         this.vevo_hazszam = vevo_hazszam;
+    }
+
+    public String getVevo_fizmod() {
+        return vevo_fizmod;
+    }
+
+    public void setVevo_fizmod(String vevo_fizmod) {
+        this.vevo_fizmod = vevo_fizmod;
     }
 
     public List<InvoiceItem> getItems() {

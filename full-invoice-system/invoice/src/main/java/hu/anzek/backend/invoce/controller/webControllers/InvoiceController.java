@@ -36,21 +36,20 @@ public class InvoiceController {
      */
     @GetMapping("/szamla/{id}")
     @SuppressWarnings({"null", "UnnecessaryBoxing"})
-    public String getInvoice(@PathVariable("id") Long id, 
-                             Model model) {
+    public String getInvoice(@PathVariable("id") Long id, Model model) {
         Invoice invoice = this.invoiceService.getInvoice(id);
         if(invoice != null){
             invoice.getItems().size();
             // valamiért lát benne a cikkódnál null értéket 
             // de nincs benne... hát lekezeljük:
-            invoice.getItems().stream().forEach(e -> e.setCikk_kod(e.getCikk_kod() == null ? Long.valueOf(0L) : e.getCikk_kod()));
+            invoice.getItems().stream().forEach(e -> e.setCikk_kod(e.getCikk_kod() == null ? Long.valueOf(0L) : e.getCikk_kod()));        
+            model.addAttribute("invoice", invoice);
+            model.addAttribute("afaTartalom", this.invoiceService.getAfaOsszesito(id));
+            
+            // a sablon meghívása:
+            return "szamla";
         }
-        model.addAttribute("invoice", invoice);
-        model.addAttribute("iTetelek",invoice.getItems() );
-        model.addAttribute("afaTartalom", this.invoiceService.getAfaOsszesito(id));
-        
-        // a sablon meghívása:
-        return "szamla";
+        return "error_message";        
     }
     
     /**
@@ -60,7 +59,7 @@ public class InvoiceController {
      * @return az áfa-összesítő sablon neve
      */
     @GetMapping("/szamla/{id}/afa_osszesito")
-    public String getAfaOsszesito(@PathVariable("id") Long id, Model model) {
+    public String getAfaOsszesites(@PathVariable("id") Long id, Model model) {
         Map<Double, Double> afaOsszesito = this.invoiceService.getAfaOsszesito(id);
         model.addAttribute("afaOsszesito", afaOsszesito);
         return "afa_osszesito";

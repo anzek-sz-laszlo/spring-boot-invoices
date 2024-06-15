@@ -8,7 +8,10 @@ package hu.anzek.backend.invoce.service;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.repository.InvUserRepo;
 import hu.anzek.backend.invoce.service.interfaces.InvoiceSystemAutheticator;
+import java.util.AbstractList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  *
@@ -25,12 +28,19 @@ public class InvoiceSystemAuthentikatorLiveRun implements InvoiceSystemAuthetica
     }
         
     @Override
-    public InvUser isTrueUser(String userName){        
-    //        this.invUser = this.userRepo.findByUserName(userName);
-    //        if(this.invUser != null ){
-    //            return this.invUser;            
-    //        }        
-        return new InvUser("user","pwuser","user");
+    public InvUser isTrueUser(String userName){             
+        List<SimpleGrantedAuthority> authList = new AbstractList<SimpleGrantedAuthority>() {
+            @Override
+            public SimpleGrantedAuthority get(int index) {
+                return new SimpleGrantedAuthority("user");
+            }
+
+            @Override
+            public int size() {
+                return 1;
+            }
+        };
+        return new InvUser("user","pwuser","user",null);
     }
 
     @Override

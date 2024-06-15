@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    </head>
+    <body>
+        <h1>Login</h1>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">A felhasználó neve:</label>
+                <input type="text" id="username" name="username"/>
+            </div>
+            <div>
+                <label for="password">Jelszó:</label>
+                <input type="password" id="password" name="password"/>
+            </div>
+            <div>
+                <button type="submit">Beléptetés</button>
+            </div>
+            <div th:if="${error}">
+                <p th:text="${error}">Érvénytelen felhasználó név, vagy jelszó!</p>
+            </div>
+        </form>
+    </body>
+    </html>
+

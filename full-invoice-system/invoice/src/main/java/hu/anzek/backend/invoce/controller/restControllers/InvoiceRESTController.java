@@ -32,7 +32,8 @@ public class InvoiceRESTController {
     }    
     
     /**
-     * automatikus készrejelntő/számlakészítő
+     * - automatikus készrejelntő/számlakészítő
+     * saját megoldású, konkurens kérés kezeléssel
      * @return megrendelések listát ad vissza (mégpedig amelyekről sikeresen számla készült)
      */
     @GetMapping("/automata_keszrejelento")
@@ -40,7 +41,25 @@ public class InvoiceRESTController {
         // viszakapjuk az automatikusan most leszamlazott megrendeléseket:
         // közben konzolra kiírja sorban az "új számla készült : ... számlaadatok ... -at is)
         List<MegrendelesDto> lista = this.invService.automataKeszrejelento();
-        // feloldás..?
+        if(lista != null){
+            // sikeres volt az előkészítés
+            return ResponseEntity.ok(lista);        
+        }else{
+            // nem található ilyen adat
+            return ResponseEntity.notFound().build();
+        }
+    }
+      
+    /**
+     * . automatikus készrejelntő/számlakészítő
+     * JPA -automatikus "Lock()" funkcióval
+     * @return megrendelések listát ad vissza (mégpedig amelyekről sikeresen számla készült)
+     */
+    @GetMapping("/autolock_keszrejelento")
+    public ResponseEntity<List<MegrendelesDto>> autoKeszreJelentoAutoLock(){
+        // viszakapjuk az automatikusan most leszamlazott megrendeléseket:
+        // közben konzolra kiírja sorban az "új számla készült : ... számlaadatok ... -at is)
+        List<MegrendelesDto> lista = this.invService.automataKeszrejelentoAutoLocked();
         if(lista != null){
             // sikeres volt az előkészítés
             return ResponseEntity.ok(lista);        
@@ -51,7 +70,7 @@ public class InvoiceRESTController {
     }
     
     /**
-     * konrétan egy megrendelést jelöl meg és kényszeríti a rendszert arra, hogy készüljön belőle számla
+     * . konrétan egy megrendelést jelöl meg és kényszeríti a rendszert arra, hogy készüljön belőle számla
      * @param id ez a megrendelés száma
      * @return sikeres volt vagy sem? (igen/nem)
      */

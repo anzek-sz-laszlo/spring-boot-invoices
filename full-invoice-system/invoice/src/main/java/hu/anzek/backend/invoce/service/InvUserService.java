@@ -5,6 +5,8 @@
 package hu.anzek.backend.invoce.service;
 
 
+import hu.anzek.backend.invoce.datalayer.dto.InvUserDto;
+import hu.anzek.backend.invoce.datalayer.mapper.InvUserMapper;
 import hu.anzek.backend.invoce.datalayer.model.InvUser;
 import hu.anzek.backend.invoce.datalayer.repository.InvUserRepo;
 import jakarta.transaction.Transactional;
@@ -90,4 +92,17 @@ public class InvUserService {
         }
         return inv;
     }
+    /////////////////////////////////////////////////////////////
+    // SpringSecurity megoldással:
+    /////////////////////////////////////////////////////////////
+    public InvUserDto getUserByIdSpringSecurity(Long id) {
+        InvUser invUser = invUserRepo.findById(id).orElseThrow(() -> new RuntimeException("A felhasználo nem talalhato!"));
+        return InvUserMapper.INSTANCE.invUserToDto(invUser);
+    }
+
+    public InvUserDto saveUserSpringSecurity(InvUserDto invUserDto) {
+        InvUser invUser = InvUserMapper.INSTANCE.dtoToInvUser(invUserDto);
+        invUser = invUserRepo.save(invUser);
+        return InvUserMapper.INSTANCE.invUserToDto(invUser);
+    }    
 }

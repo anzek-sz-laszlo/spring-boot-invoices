@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -54,12 +55,17 @@ public class Megrendeles implements Serializable {
     @JsonManagedReference
     private List<MegrendelesTetel> tetelek;
     private String megjegyzes;
-    private LocalDate rogzitve;
+    private LocalDate rogzitve;   
     private boolean lezarva;
-    // ha le van számlázva ideírjuk a számlaszámot:
     // így leblokkoljuk a további, vagy az újra leszámlázását!
-    private String szamlaszam;
+    // ha le van számlázva ideírjuk a számlaszámot:
+     private String szamlaszam;
+    // gyalogos zárolás - ha nincs igazi konkurens kérés (néhány felhasználó dolgozik)
     private boolean zarolva;
+    // a versenyhelyzetet elkerülő locked, 
+    // azaz a JPA tranzakciós verziókezelő mezője (a mezőnév bármi lehet):
+    @Version
+    private int verzio;
     
     public Megrendeles() {
     }
@@ -76,7 +82,7 @@ public class Megrendeles implements Serializable {
         this.mikorra = mikorra;
         this.megjegyzes = megjegyzes;
         this.rogzitve = update;
-        // ezek nem dzükséges beállítások, de így nem dobhat sehol nullabla kivételt!
+        // ezek nem szükséges beállítások, de így nem dobhat sehol nullabla kivételt!
         this.szamlaszam = "";
         this.lezarva = false;
         this.zarolva = false;
@@ -155,6 +161,22 @@ public class Megrendeles implements Serializable {
 
     public void setLezarva(boolean lezarva) {
         this.lezarva = lezarva;
+    }
+
+    /**
+     * a JPA konkurens kérések verziókezelő mező kiolvasója
+     * @return az aktuális verziószám
+     */
+    public int getVerzio() {
+        return verzio;
+    }
+
+    /**
+     * a JPA konkurens kérések verziókezelő mező beállító metódusa
+     * @param verzio a verziószám
+     */
+    public void setVerzio(int verzio) {
+        this.verzio = verzio;
     }
     
     /**
